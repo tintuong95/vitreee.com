@@ -6,7 +6,7 @@ const Logo = (props) => (
 		xmlnsXlink='http://www.w3.org/1999/xlink'
 		width='100%'
 		height='100%'
-		viewBox='0 80 340.000000 110.000000'
+		viewBox='0 80 340.000000 90.000000'
 		preserveAspectRatio='xMidYMid meet'
 		colorInterpolationFilters='sRGB'
 		style={{
