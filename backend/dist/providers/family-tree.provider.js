@@ -18,54 +18,96 @@ const typeorm_1 = require("@nestjs/typeorm");
 const family_tree_1 = require("../entities/family-tree");
 const typeorm_2 = require("typeorm");
 const _ = require("lodash");
+const pagination_1 = require("../helper/pagination");
 let FamilyTreeProvider = class FamilyTreeProvider {
     constructor(familyTreesRepository) {
         this.familyTreesRepository = familyTreesRepository;
     }
-    async findAllAsync(request) {
-        const { currentPage = 1, pageSize = 100 } = request.query;
-        const skip = (+currentPage - 1) * +pageSize;
+    async findAllAsync(accountId, request) {
+        const { skip, take, currentPage, perPage } = (0, pagination_1.queryHandler)(request.query);
         const result = this.familyTreesRepository
             .createQueryBuilder('family_tree')
             .where(`family_tree.deletedAt IS NULL`)
+            .andWhere(`family_tree.accountId = :accountId`, {
+            accountId: `${accountId}`,
+        })
             .orderBy('family_tree.createdAt', 'DESC')
             .skip(+skip)
-            .take(+pageSize);
+            .take(+take);
         const count = await result.getCount();
         const list = await result.getMany();
+        if (count == 0)
+            throw new common_1.HttpException('Not Found', common_1.HttpStatus.NOT_FOUND);
         return {
             count,
             list,
+            currentPage,
+            perPage,
         };
     }
-    async findOneAsync(id) {
-        return this.familyTreesRepository.findOneBy({ id });
+    async findOneAsync(accountId, id) {
+        const find = await this.familyTreesRepository
+            .createQueryBuilder('family_tree')
+            .where(`family_tree.deletedAt IS NULL`)
+            .andWhere(`family_tree.id = :id`, {
+            id: `${id}`,
+        })
+            .andWhere(`family_tree.accountId = :accountId`, {
+            accountId: `${accountId}`,
+        })
+            .getOne();
+        if (!find)
+            throw new common_1.NotFoundException('family_tree Id ' + id + ' Not Found !');
+        return find;
     }
     async addAsync(accountId, createFamilyTreeDTO) {
         const create = this.familyTreesRepository.create({
             accountId,
-            ...createFamilyTreeDTO
+            ...createFamilyTreeDTO,
         });
         await this.familyTreesRepository.save(create);
         return create;
     }
-    async updateAsync(id, update) {
-        const find = await this.familyTreesRepository.findOneBy({ id });
-        if (find) {
-            _(update).forEach((val, key) => {
-                if (val)
-                    find[key] = val;
-            });
-            return await this.familyTreesRepository.save(find);
+    async updateAsync(accountId, id, update) {
+        const find = await this.familyTreesRepository
+            .createQueryBuilder('family_tree')
+            .where(`family_tree.deletedAt IS NULL`)
+            .andWhere(`family_tree.id = :id`, {
+            id: `${id}`,
+        })
+            .andWhere(`family_tree.accountId = :accountId`, {
+            accountId: `${accountId}`,
+        })
+            .getOne();
+        if (!find)
+            throw new common_1.NotFoundException('family_tree Id ' + id + ' Not Found !');
+        else {
+            {
+                _(update).forEach((val, key) => {
+                    if (val)
+                        find[key] = val;
+                });
+                return await this.familyTreesRepository.save(find);
+            }
         }
     }
-    async removeAsync(id) {
-        const find = await this.familyTreesRepository.softDelete(id);
-        return find;
+    async removeAsync(accountId, id) {
+        const find = await this.familyTreesRepository.softDelete({
+            id,
+            accountId,
+        });
+        if (find.affected > 0)
+            return 'Deleted family tree Id ' + id + ' successfully !';
+        throw new common_1.NotFoundException('family tree Id ' + id + ' Not Found !');
     }
-    async restoreAsync(id) {
-        const find = await this.familyTreesRepository.restore(id);
-        return find;
+    async restoreAsync(accountId, id) {
+        const result = await this.familyTreesRepository.restore({
+            id,
+            accountId,
+        });
+        if (result.affected > 0)
+            return 'Restore family tree Id ' + id + ' successfully !';
+        throw new common_1.NotFoundException('family tree Id ' + id + ' Not Found !');
     }
 };
 exports.FamilyTreeProvider = FamilyTreeProvider;

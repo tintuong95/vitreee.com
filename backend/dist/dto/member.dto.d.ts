@@ -1,4 +1,6 @@
+import { GENDER_TYPE } from 'src/types/index.type';
 export declare class CreateMemberDTO {
+    familyTreeId: string;
     fullName: string;
     phone: string;
     email: string;
@@ -7,8 +9,7 @@ export declare class CreateMemberDTO {
     description: string;
     birth_date: string;
     dead_date: string;
-    gender: number;
-    status: number;
+    gender?: GENDER_TYPE;
 }
 declare const UpdateMemberDTO_base: import("@nestjs/common").Type<Partial<CreateMemberDTO>>;
 export declare class UpdateMemberDTO extends UpdateMemberDTO_base {

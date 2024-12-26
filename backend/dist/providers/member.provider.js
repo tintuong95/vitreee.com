@@ -18,51 +18,96 @@ const typeorm_1 = require("@nestjs/typeorm");
 const member_1 = require("../entities/member");
 const typeorm_2 = require("typeorm");
 const _ = require("lodash");
+const pagination_1 = require("../helper/pagination");
 let MemberProvider = class MemberProvider {
     constructor(memberRepository) {
         this.memberRepository = memberRepository;
     }
-    async findAllAsync(request) {
-        const { currentPage = 1, pageSize = 100 } = request.query;
-        const skip = (+currentPage - 1) * +pageSize;
+    async findAllAsync(accountId, request) {
+        const { skip, take, currentPage, perPage } = (0, pagination_1.queryHandler)(request.query);
         const result = this.memberRepository
-            .createQueryBuilder('family_tree')
-            .where(`family_tree.deletedAt IS NULL`)
-            .orderBy('family_tree.createdAt', 'DESC')
+            .createQueryBuilder('member')
+            .where(`member.deletedAt IS NULL`)
+            .andWhere(`member.accountId = :accountId`, {
+            accountId: `${accountId}`,
+        })
+            .orderBy('member.createdAt', 'DESC')
             .skip(+skip)
-            .take(+pageSize);
+            .take(+take);
         const count = await result.getCount();
-        const data = await result.getMany();
+        const list = await result.getMany();
+        if (count == 0)
+            throw new common_1.HttpException('Not Found', common_1.HttpStatus.NOT_FOUND);
         return {
             count,
-            data,
+            list,
+            currentPage,
+            perPage,
         };
     }
-    async findOneAsync(id) {
-        return this.memberRepository.findOneBy({ id });
+    async findOneAsync(accountId, id) {
+        const find = await this.memberRepository
+            .createQueryBuilder('member')
+            .where(`member.deletedAt IS NULL`)
+            .andWhere(`member.id = :id`, {
+            id: `${id}`,
+        })
+            .andWhere(`member.accountId = :accountId`, {
+            accountId: `${accountId}`,
+        })
+            .getOne();
+        if (!find)
+            throw new common_1.NotFoundException('member Id ' + id + ' Not Found !');
+        return find;
     }
-    async addAsync(createMemberDTO) {
-        const create = this.memberRepository.create(createMemberDTO);
+    async addAsync(accountId, createMemberDTO) {
+        const create = this.memberRepository.create({
+            accountId,
+            ...createMemberDTO,
+        });
         await this.memberRepository.save(create);
         return create;
     }
-    async updateAsync(id, update) {
-        const find = await this.memberRepository.findOneBy({ id });
-        if (find) {
-            _(update).forEach((val, key) => {
-                if (val)
-                    find[key] = val;
-            });
-            return await this.memberRepository.save(find);
+    async updateAsync(accountId, id, update) {
+        const find = await this.memberRepository
+            .createQueryBuilder('member')
+            .where(`member.deletedAt IS NULL`)
+            .andWhere(`member.id = :id`, {
+            id: `${id}`,
+        })
+            .andWhere(`member.accountId = :accountId`, {
+            accountId: `${accountId}`,
+        })
+            .getOne();
+        if (!find)
+            throw new common_1.NotFoundException('member Id ' + id + ' Not Found !');
+        else {
+            {
+                _(update).forEach((val, key) => {
+                    if (val)
+                        find[key] = val;
+                });
+                return await this.memberRepository.save(find);
+            }
         }
     }
-    async removeAsync(id) {
-        const find = await this.memberRepository.softDelete(id);
-        return find;
+    async removeAsync(accountId, id) {
+        const find = await this.memberRepository.softDelete({
+            id,
+            accountId,
+        });
+        if (find.affected > 0)
+            return 'Deleted member Id ' + id + ' successfully !';
+        throw new common_1.NotFoundException('member Id ' + id + ' Not Found !');
     }
-    async restoreAsync(id) {
-        const find = await this.memberRepository.restore(id);
-        return find;
+    async restoreAsync(accountId, id) {
+        const result = await this.memberRepository.restore({
+            id,
+            accountId,
+        });
+        if (result.affected > 0)
+            return 'Restore member Id ' + id + ' successfully !';
+        throw new common_1.NotFoundException('member Id ' + id + ' Not Found !');
     }
 };
 exports.MemberProvider = MemberProvider;

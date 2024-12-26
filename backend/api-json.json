@@ -1,1 +1,510 @@
-{"openapi":"3.0.0","paths":{"/auth/login":{"post":{"operationId":"AuthController_createAsync","parameters":[],"responses":{"201":{"description":""}},"tags":["Auth"]}},"/account":{"get":{"operationId":"AccountController_findAll","parameters":[],"responses":{"200":{"description":""}},"tags":["Account"]}},"/account/{id}":{"get":{"operationId":"AccountController_findOne","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"string"}}],"responses":{"200":{"description":""}},"tags":["Account"]}},"/account/create":{"post":{"operationId":"AccountController_createAsync","parameters":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CreateAccountDTO"}}}},"responses":{"201":{"description":""}},"tags":["Account"]}},"/account/{id}/update":{"post":{"operationId":"AccountController_updateAsync","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"string"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UpdateAccountDTO"}}}},"responses":{"201":{"description":""}},"tags":["Account"]}},"/account/{id}/remove":{"delete":{"operationId":"AccountController_removeAsync","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"number"}}],"responses":{"200":{"description":""}},"tags":["Account"]}},"/account/{id}/restore":{"delete":{"operationId":"AccountController_restoreAsync","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"number"}}],"responses":{"200":{"description":""}},"tags":["Account"]}},"/account/login":{"post":{"operationId":"AccountController_login","parameters":[],"responses":{"201":{"description":""}},"tags":["Account"]}},"/familyTree":{"get":{"operationId":"FamilyTreeController_findAll","parameters":[],"responses":{"200":{"description":""}},"tags":["FamilyTree"]}},"/familyTree/{id}":{"get":{"operationId":"FamilyTreeController_findOne","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"string"}}],"responses":{"200":{"description":""}},"tags":["FamilyTree"]}},"/familyTree/create":{"post":{"operationId":"FamilyTreeController_createAsync","parameters":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CreateFamilyTreeDTO"}}}},"responses":{"201":{"description":""}},"tags":["FamilyTree"]}},"/familyTree/{id}/update":{"post":{"operationId":"FamilyTreeController_updateAsync","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"string"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UpdateFamilyTreeDTO"}}}},"responses":{"201":{"description":""}},"tags":["FamilyTree"]}},"/familyTree/{id}/remove":{"delete":{"operationId":"FamilyTreeController_removeAsync","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"number"}}],"responses":{"200":{"description":""}},"tags":["FamilyTree"]}},"/familyTree/{id}/restore":{"delete":{"operationId":"FamilyTreeController_restoreAsync","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"number"}}],"responses":{"200":{"description":""}},"tags":["FamilyTree"]}},"/member":{"get":{"operationId":"MemberController_findAll","parameters":[],"responses":{"200":{"description":""}},"tags":["Member"]}},"/member/{id}":{"get":{"operationId":"MemberController_findOne","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"string"}}],"responses":{"200":{"description":""}},"tags":["Member"]}},"/member/create":{"post":{"operationId":"MemberController_createAsync","parameters":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CreateMemberDTO"}}}},"responses":{"201":{"description":""}},"tags":["Member"]}},"/member/{id}/update":{"post":{"operationId":"MemberController_updateAsync","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"string"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UpdateMemberDTO"}}}},"responses":{"201":{"description":""}},"tags":["Member"]}},"/member/{id}/remove":{"delete":{"operationId":"MemberController_removeAsync","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"number"}}],"responses":{"200":{"description":""}},"tags":["Member"]}},"/member/{id}/restore":{"delete":{"operationId":"MemberController_restoreAsync","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"number"}}],"responses":{"200":{"description":""}},"tags":["Member"]}},"/relation":{"get":{"operationId":"RelationController_findAll","parameters":[],"responses":{"200":{"description":""}},"tags":["Relation"]}},"/relation/{id}":{"get":{"operationId":"RelationController_findOne","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"string"}}],"responses":{"200":{"description":""}},"tags":["Relation"]}},"/relation/create":{"post":{"operationId":"RelationController_createAsync","parameters":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CreateRelationDTO"}}}},"responses":{"201":{"description":""}},"tags":["Relation"]}},"/relation/{id}/update":{"post":{"operationId":"RelationController_updateAsync","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"string"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UpdateRelationDTO"}}}},"responses":{"201":{"description":""}},"tags":["Relation"]}},"/relation/{id}/remove":{"delete":{"operationId":"RelationController_removeAsync","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"number"}}],"responses":{"200":{"description":""}},"tags":["Relation"]}},"/relation/{id}/restore":{"delete":{"operationId":"RelationController_restoreAsync","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"number"}}],"responses":{"200":{"description":""}},"tags":["Relation"]}}},"info":{"title":"vitreee.com example","description":"The ViTreee API description","version":"1.0","contact":{}},"tags":[{"name":"vitreee","description":""}],"servers":[],"components":{"schemas":{"CreateAccountDTO":{"type":"object","properties":{"email":{"type":"string"},"password":{"type":"string"},"status":{"type":"number"}},"required":["email","password","status"]},"UpdateAccountDTO":{"type":"object","properties":{"email":{"type":"string"},"password":{"type":"string"},"status":{"type":"number"}}},"CreateFamilyTreeDTO":{"type":"object","properties":{"name":{"type":"string"},"address":{"type":"string"},"imageUrlCover":{"type":"string"},"description":{"type":"string"},"status":{"type":"number"},"member":{"type":"number"}},"required":["name","address","imageUrlCover","description","status","member"]},"UpdateFamilyTreeDTO":{"type":"object","properties":{"name":{"type":"string"},"address":{"type":"string"},"imageUrlCover":{"type":"string"},"description":{"type":"string"},"status":{"type":"number"},"member":{"type":"number"}}},"CreateMemberDTO":{"type":"object","properties":{"fullName":{"type":"string"},"phone":{"type":"string"},"email":{"type":"string"},"address":{"type":"string"},"avatar":{"type":"string"},"description":{"type":"string"},"birth_date":{"type":"string"},"dead_date":{"type":"string"},"gender":{"type":"number"},"status":{"type":"number"}},"required":["fullName","phone","email","address","avatar","description","birth_date","dead_date","gender","status"]},"UpdateMemberDTO":{"type":"object","properties":{"fullName":{"type":"string"},"phone":{"type":"string"},"email":{"type":"string"},"address":{"type":"string"},"avatar":{"type":"string"},"description":{"type":"string"},"birth_date":{"type":"string"},"dead_date":{"type":"string"},"gender":{"type":"number"},"status":{"type":"number"}}},"CreateRelationDTO":{"type":"object","properties":{"type":{"type":"number"},"member_first_id":{"type":"number"},"member_second_id":{"type":"number"},"status":{"type":"number"}},"required":["type","member_first_id","member_second_id","status"]},"UpdateRelationDTO":{"type":"object","properties":{"type":{"type":"number"},"member_first_id":{"type":"number"},"member_second_id":{"type":"number"},"status":{"type":"number"}}}}},"externalDocs":{"description":"Postman Collection","url":"/docs-json"}}
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "operationId": "AuthController_createAsync",
+        "parameters": [],
+        "responses": { "201": { "description": "" } },
+        "tags": ["Auth"]
+      }
+    },
+    "/account": {
+      "get": {
+        "operationId": "AccountController_findAll",
+        "parameters": [],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Account"]
+      }
+    },
+    "/account/{id}": {
+      "get": {
+        "operationId": "AccountController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Account"]
+      }
+    },
+    "/account/create": {
+      "post": {
+        "operationId": "AccountController_createAsync",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateAccountDto" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } },
+        "tags": ["Account"]
+      }
+    },
+    "/account/{id}/update": {
+      "post": {
+        "operationId": "AccountController_updateAsync",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateAccountDto" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } },
+        "tags": ["Account"]
+      }
+    },
+    "/account/{id}/remove": {
+      "delete": {
+        "operationId": "AccountController_removeAsync",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Account"]
+      }
+    },
+    "/account/{id}/restore": {
+      "delete": {
+        "operationId": "AccountController_restoreAsync",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Account"]
+      }
+    },
+    "/account/login": {
+      "post": {
+        "operationId": "AccountController_login",
+        "parameters": [],
+        "responses": { "201": { "description": "" } },
+        "tags": ["Account"]
+      }
+    },
+    "/familyTree": {
+      "get": {
+        "operationId": "FamilyTreeController_findAll",
+        "parameters": [],
+        "responses": { "200": { "description": "" } },
+        "tags": ["FamilyTree"]
+      }
+    },
+    "/familyTree/{id}": {
+      "get": {
+        "operationId": "FamilyTreeController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["FamilyTree"]
+      }
+    },
+    "/familyTree/create": {
+      "post": {
+        "operationId": "FamilyTreeController_createAsync",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateFamilyTreeDTO" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } },
+        "tags": ["FamilyTree"]
+      }
+    },
+    "/familyTree/{id}/update": {
+      "post": {
+        "operationId": "FamilyTreeController_updateAsync",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateFamilyTreeDTO" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } },
+        "tags": ["FamilyTree"]
+      }
+    },
+    "/familyTree/{id}/remove": {
+      "delete": {
+        "operationId": "FamilyTreeController_removeAsync",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["FamilyTree"]
+      }
+    },
+    "/familyTree/{id}/restore": {
+      "delete": {
+        "operationId": "FamilyTreeController_restoreAsync",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["FamilyTree"]
+      }
+    },
+    "/member": {
+      "get": {
+        "operationId": "MemberController_findAll",
+        "parameters": [],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Member"]
+      }
+    },
+    "/member/{id}": {
+      "get": {
+        "operationId": "MemberController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Member"]
+      }
+    },
+    "/member/create": {
+      "post": {
+        "operationId": "MemberController_createAsync",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateMemberDTO" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } },
+        "tags": ["Member"]
+      }
+    },
+    "/member/{id}/update": {
+      "post": {
+        "operationId": "MemberController_updateAsync",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateMemberDTO" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } },
+        "tags": ["Member"]
+      }
+    },
+    "/member/{id}/remove": {
+      "delete": {
+        "operationId": "MemberController_removeAsync",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Member"]
+      }
+    },
+    "/member/{id}/restore": {
+      "delete": {
+        "operationId": "MemberController_restoreAsync",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Member"]
+      }
+    },
+    "/relation": {
+      "get": {
+        "operationId": "RelationController_findAll",
+        "parameters": [],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Relation"]
+      }
+    },
+    "/relation/{id}": {
+      "get": {
+        "operationId": "RelationController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Relation"]
+      }
+    },
+    "/relation/create": {
+      "post": {
+        "operationId": "RelationController_createAsync",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateRelationDTO" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } },
+        "tags": ["Relation"]
+      }
+    },
+    "/relation/{id}/update": {
+      "post": {
+        "operationId": "RelationController_updateAsync",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateRelationDTO" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } },
+        "tags": ["Relation"]
+      }
+    },
+    "/relation/{id}/remove": {
+      "delete": {
+        "operationId": "RelationController_removeAsync",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Relation"]
+      }
+    },
+    "/relation/{id}/restore": {
+      "delete": {
+        "operationId": "RelationController_restoreAsync",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Relation"]
+      }
+    }
+  },
+  "info": {
+    "title": "vitreee.com example",
+    "description": "The ViTreee API description",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [{ "name": "vitreee", "description": "" }],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "CreateAccountDto": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" },
+          "password": { "type": "string" },
+          "status": { "type": "number" }
+        },
+        "required": ["email", "password", "status"]
+      },
+      "UpdateAccountDto": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" },
+          "password": { "type": "string" },
+          "status": { "type": "number" }
+        }
+      },
+      "CreateFamilyTreeDTO": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "address": { "type": "string" },
+          "imageUrlCover": { "type": "string" },
+          "description": { "type": "string" },
+          "status": { "type": "number" },
+          "member": { "type": "number" }
+        },
+        "required": [
+          "name",
+          "address",
+          "imageUrlCover",
+          "description",
+          "status",
+          "member"
+        ]
+      },
+      "UpdateFamilyTreeDTO": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "address": { "type": "string" },
+          "imageUrlCover": { "type": "string" },
+          "description": { "type": "string" },
+          "status": { "type": "number" },
+          "member": { "type": "number" }
+        }
+      },
+      "CreateMemberDTO": {
+        "type": "object",
+        "properties": {
+          "fullName": { "type": "string" },
+          "phone": { "type": "string" },
+          "email": { "type": "string" },
+          "address": { "type": "string" },
+          "avatar": { "type": "string" },
+          "description": { "type": "string" },
+          "birth_date": { "type": "string" },
+          "dead_date": { "type": "string" },
+          "gender": { "type": "number" },
+          "status": { "type": "number" }
+        },
+        "required": [
+          "fullName",
+          "phone",
+          "email",
+          "address",
+          "avatar",
+          "description",
+          "birth_date",
+          "dead_date",
+          "gender",
+          "status"
+        ]
+      },
+      "UpdateMemberDTO": {
+        "type": "object",
+        "properties": {
+          "fullName": { "type": "string" },
+          "phone": { "type": "string" },
+          "email": { "type": "string" },
+          "address": { "type": "string" },
+          "avatar": { "type": "string" },
+          "description": { "type": "string" },
+          "birth_date": { "type": "string" },
+          "dead_date": { "type": "string" },
+          "gender": { "type": "number" },
+          "status": { "type": "number" }
+        }
+      },
+      "CreateRelationDTO": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "number" },
+          "member_first_id": { "type": "number" },
+          "member_second_id": { "type": "number" },
+          "status": { "type": "number" }
+        },
+        "required": ["type", "member_first_id", "member_second_id", "status"]
+      },
+      "UpdateRelationDTO": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "number" },
+          "member_first_id": { "type": "number" },
+          "member_second_id": { "type": "number" },
+          "status": { "type": "number" }
+        }
+      }
+    }
+  },
+  "externalDocs": { "description": "Postman Collection", "url": "/docs-json" }
+}

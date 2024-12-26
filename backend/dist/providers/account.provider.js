@@ -18,31 +18,44 @@ const typeorm_1 = require("@nestjs/typeorm");
 const account_1 = require("../entities/account");
 const typeorm_2 = require("typeorm");
 const _ = require("lodash");
+const pagination_1 = require("../helper/pagination");
 let AccountProvider = class AccountProvider {
     constructor(accountRepository) {
         this.accountRepository = accountRepository;
     }
     async findAllAsync(request) {
-        const { currentPage = 1, pageSize = 100 } = request.query;
-        const skip = (+currentPage - 1) * +pageSize;
+        const { skip, take, currentPage, perPage } = (0, pagination_1.queryHandler)(request.query);
         const result = this.accountRepository
-            .createQueryBuilder('family_tree')
-            .where(`family_tree.deletedAt IS NULL`)
-            .orderBy('family_tree.createdAt', 'DESC')
+            .createQueryBuilder('account')
+            .where(`account.deletedAt IS NULL`)
+            .orderBy('account.createdAt', 'DESC')
             .skip(+skip)
-            .take(+pageSize);
+            .take(+take);
         const count = await result.getCount();
-        const data = await result.getMany();
+        const list = await result.getMany();
+        if (count == 0)
+            throw new common_1.HttpException('Not Found', common_1.HttpStatus.NOT_FOUND);
         return {
             count,
-            data,
+            list,
+            currentPage,
+            perPage,
         };
     }
     async findOneAsync(id) {
-        return this.accountRepository.findOneBy({ id });
+        const find = await this.accountRepository
+            .createQueryBuilder('account')
+            .where(`account.deletedAt IS NULL`)
+            .andWhere(`account.id = :id`, {
+            id: `${id}`,
+        })
+            .getOne();
+        if (!find)
+            throw new common_1.NotFoundException('account Id ' + id + ' Not Found !');
+        return find;
     }
-    async addAsync(createAccountDTO) {
-        const create = this.accountRepository.create(createAccountDTO);
+    async addAsync(CreateAccountDto) {
+        const create = this.accountRepository.create(CreateAccountDto);
         await this.accountRepository.save(create);
         return create;
     }
@@ -66,13 +79,7 @@ let AccountProvider = class AccountProvider {
     }
     async signInAsync(email, password) {
         const find = await this.accountRepository.findOneBy({ email });
-        if (find) {
-            if (find.isTruePassword(password)) {
-                return find;
-            }
-            return null;
-        }
-        return null;
+        return find.isTruePassword(password) ? find : null;
     }
 };
 exports.AccountProvider = AccountProvider;

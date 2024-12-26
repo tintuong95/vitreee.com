@@ -1,9 +1,35 @@
-export declare class CreateAccountDTO {
+import { ACCOUNT_STATUS } from 'src/types/account.type';
+import { GENDER_TYPE } from 'src/types/index.type';
+export declare class CreateAccountDto {
     email: string;
     password: string;
-    status: number;
+    fullName: string;
+    phone: string;
+    photo?: string;
+    dateOfBirth: string;
+    gender: GENDER_TYPE;
+    status: ACCOUNT_STATUS;
 }
-declare const UpdateAccountDTO_base: import("@nestjs/common").Type<Partial<CreateAccountDTO>>;
-export declare class UpdateAccountDTO extends UpdateAccountDTO_base {
+export declare class UpdateAccountDto {
+    email: string;
+    fullName?: string;
+    phone?: string;
+    photo?: string;
+    dateOfBirth?: string;
+    gender?: GENDER_TYPE;
+    status?: ACCOUNT_STATUS;
 }
-export {};
+export declare class AccountResponseDto {
+    id: string;
+    email: string;
+    fullName: string;
+    phone: string;
+    photo: string;
+    dateOfBirth: string;
+    gender: GENDER_TYPE;
+    status: ACCOUNT_STATUS;
+}
+export declare class LoginDto {
+    email: string;
+    password: string;
+}

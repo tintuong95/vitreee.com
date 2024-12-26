@@ -5,13 +5,15 @@ import { CreateRelationDTO, UpdateRelationDTO } from 'src/dto/relation.dto';
 export declare class RelationProvider {
     private relationRepository;
     constructor(relationRepository: Repository<Relation>);
-    findAllAsync(request: Request): Promise<{
+    findAllAsync(accountId: string, request: Request): Promise<{
         count: number;
-        data: Relation[];
+        list: Relation[];
+        currentPage: number;
+        perPage: number;
     }>;
-    findOneAsync(id: string): Promise<Relation | null>;
-    addAsync(createRelationDTO: CreateRelationDTO): Promise<Relation>;
-    updateAsync(id: string, update: UpdateRelationDTO): Promise<Relation>;
-    removeAsync(id: number): Promise<import("typeorm").UpdateResult>;
-    restoreAsync(id: number): Promise<import("typeorm").UpdateResult>;
+    findOneAsync(accountId: string, id: string): Promise<Relation | null>;
+    addAsync(accountId: string, createRelationDTO: CreateRelationDTO): Promise<Relation>;
+    updateAsync(accountId: string, id: string, update: UpdateRelationDTO): Promise<Relation>;
+    removeAsync(accountId: string, id: string): Promise<string>;
+    restoreAsync(accountId: string, id: string): Promise<string>;
 }

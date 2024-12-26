@@ -1,106 +1,167 @@
-import { Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateFamilyTreeDTO, UpdateFamilyTreeDTO } from 'src/dto/family-tree.dto';
+import {
+  CreateFamilyTreeDTO,
+  UpdateFamilyTreeDTO,
+} from 'src/dto/family-tree.dto';
 import { FamilyTree } from 'src/entities/family-tree';
 import { Repository } from 'typeorm';
 import * as _ from 'lodash';
 import { Request } from 'express';
+import { queryHandler } from 'src/helper/pagination';
 
 @Injectable()
 export class FamilyTreeProvider {
-
   /**
-   * 
-   * @param familyTreesRepository 
+   *
+   * @param familyTreesRepository
    */
   constructor(
     @InjectRepository(FamilyTree)
     private familyTreesRepository: Repository<FamilyTree>,
-  ) { }
-
+  ) {}
 
   /**
-   * 
-   * @returns 
+   *
+   * @returns
    */
-  public async findAllAsync(request: Request): Promise<{
-    count: number,
-    list: FamilyTree[]
+  public async findAllAsync(
+    accountId: string,
+    request: Request,
+  ): Promise<{
+    count: number;
+    list: FamilyTree[];
+    currentPage: number;
+    perPage: number;
   }> {
-    const { currentPage = 1, pageSize = 100 } = request.query;
-    const skip = (+currentPage - 1) * +pageSize;
+    const { skip, take, currentPage, perPage } = queryHandler(request.query);
     const result = this.familyTreesRepository
       .createQueryBuilder('family_tree')
       .where(`family_tree.deletedAt IS NULL`)
+      .andWhere(`family_tree.accountId = :accountId`, {
+        accountId: `${accountId}`,
+      })
       .orderBy('family_tree.createdAt', 'DESC')
       .skip(+skip)
-      .take(+pageSize);
+      .take(+take);
 
     const count = await result.getCount();
     const list = await result.getMany();
+    if (count == 0) throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     return {
       count,
       list,
+      currentPage,
+      perPage,
     };
   }
 
   /**
-   * 
-   * @param id 
-   * @returns 
+   *
+   * @param id
+   * @returns
    */
-  public async findOneAsync(id: string): Promise<FamilyTree | null> {
-    return this.familyTreesRepository.findOneBy({ id });
+  public async findOneAsync(
+    accountId: string,
+    id: string,
+  ): Promise<FamilyTree | null> {
+    const find = await this.familyTreesRepository
+      .createQueryBuilder('family_tree')
+      .where(`family_tree.deletedAt IS NULL`)
+      .andWhere(`family_tree.id = :id`, {
+        id: `${id}`,
+      })
+      .andWhere(`family_tree.accountId = :accountId`, {
+        accountId: `${accountId}`,
+      })
+      .getOne();
+    if (!find)
+      throw new NotFoundException('family_tree Id ' + id + ' Not Found !');
+    return find;
   }
 
   /**
-   * 
-   * @param createFamilyTreeDTO 
-   * @returns 
+   *
+   * @param createFamilyTreeDTO
+   * @returns
    */
-  public async addAsync(accountId: string, createFamilyTreeDTO: CreateFamilyTreeDTO): Promise<FamilyTree> {
+  public async addAsync(
+    accountId: string,
+    createFamilyTreeDTO: CreateFamilyTreeDTO,
+  ): Promise<FamilyTree> {
     const create = this.familyTreesRepository.create({
       accountId,
-      ...createFamilyTreeDTO
+      ...createFamilyTreeDTO,
     });
     await this.familyTreesRepository.save(create);
     return create;
   }
 
-
   /**
-   * 
-   * @param id 
-   * @param update 
-   * @returns 
+   *
+   * @param id
+   * @param update
+   * @returns
    */
-  public async updateAsync(id: string, update: UpdateFamilyTreeDTO): Promise<FamilyTree> {
-    const find = await this.familyTreesRepository.findOneBy({ id })
-    if (find) {
-      _(update).forEach((val, key) => {
-        if (val) find[key] = val;
-      });
-      return await this.familyTreesRepository.save(find);
+  public async updateAsync(
+    accountId: string,
+    id: string,
+    update: UpdateFamilyTreeDTO,
+  ): Promise<FamilyTree> {
+    const find = await this.familyTreesRepository
+      .createQueryBuilder('family_tree')
+      .where(`family_tree.deletedAt IS NULL`)
+      .andWhere(`family_tree.id = :id`, {
+        id: `${id}`,
+      })
+      .andWhere(`family_tree.accountId = :accountId`, {
+        accountId: `${accountId}`,
+      })
+      .getOne();
+    if (!find)
+      throw new NotFoundException('family_tree Id ' + id + ' Not Found !');
+    else {
+      {
+        _(update).forEach((val, key) => {
+          if (val) find[key] = val;
+        });
+        return await this.familyTreesRepository.save(find);
+      }
     }
   }
 
   /**
-   * 
-   * @param id 
-   * @returns 
+   *
+   * @param id
+   * @returns
    */
-  async removeAsync(id: number) {
-    const find = await this.familyTreesRepository.softDelete(id);
-    return find;
+  async removeAsync(accountId: string, id: string) {
+    const find = await this.familyTreesRepository.softDelete({
+      id,
+      accountId,
+    });
+    if (find.affected > 0)
+      return 'Deleted family tree Id ' + id + ' successfully !';
+    throw new NotFoundException('family tree Id ' + id + ' Not Found !');
   }
 
   /**
-   * 
-   * @param id 
-   * @returns 
+   *
+   * @param id
+   * @returns
    */
-  async restoreAsync(id: number) {
-    const find = await this.familyTreesRepository.restore(id);
-    return find;
+  async restoreAsync(accountId: string, id: string) {
+    const result = await this.familyTreesRepository.restore({
+      id,
+      accountId,
+    });
+    if (result.affected > 0)
+      return 'Restore family tree Id ' + id + ' successfully !';
+    throw new NotFoundException('family tree Id ' + id + ' Not Found !');
   }
 }

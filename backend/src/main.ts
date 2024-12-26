@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import helmet from 'helmet';
 
@@ -11,6 +11,7 @@ async function bootstrap() {
       rawBody: true, //application/json
       logger: ['error', 'warn', 'log', 'verbose', 'debug'],
     });
+  app.useGlobalPipes(new ValidationPipe());
 
   /**
    * setup cors

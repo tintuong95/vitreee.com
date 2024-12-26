@@ -22,63 +22,94 @@ let FamilyTreeController = class FamilyTreeController {
     constructor(_familyTreeProvider) {
         this._familyTreeProvider = _familyTreeProvider;
     }
-    async findAll(request, response) {
+    async findAll(request, response, _account) {
         try {
-            const find = await this._familyTreeProvider.findAllAsync(request);
+            const find = await this._familyTreeProvider.findAllAsync(_account.id, request);
             return response.status(common_1.HttpStatus.OK).json({
-                message: 'All family-tree data found successfully',
-                data: find
+                message: 'Find data successfully!',
+                data: find,
             });
         }
         catch (error) {
             console.log(error);
             return response.status(common_1.HttpStatus.BAD_REQUEST).json({
-                statusCode: 400,
-                message: 'Error! family-tree not found!',
-                error: 'Bad Request',
+                message: 'Find data failture!',
             });
         }
     }
-    async findOne(id) {
+    async findOne(id, response, _account) {
         try {
-            return await this._familyTreeProvider.findOneAsync(id);
-        }
-        catch (error) {
-            throw new common_1.HttpException(error.sqlMessage, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    async createAsync(create, _account) {
-        try {
-            console.log("_account", _account);
-            return await this._familyTreeProvider.addAsync(_account.id, create);
+            const find = await this._familyTreeProvider.findOneAsync(_account.id, id);
+            return response.status(common_1.HttpStatus.OK).json({
+                message: 'Find data successfully!',
+                data: find,
+            });
         }
         catch (error) {
             console.log(error);
-            throw new common_1.HttpException(error.sqlMessage, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: 'Find data failture!',
+            });
         }
     }
-    async updateAsync(update, id) {
+    async createAsync(create, response, _account) {
         try {
-            return await this._familyTreeProvider.updateAsync(id, update);
+            const find = await this._familyTreeProvider.addAsync(_account.id, create);
+            return response.status(common_1.HttpStatus.OK).json({
+                message: 'Create successfully!',
+                data: find,
+            });
         }
         catch (error) {
-            throw new common_1.HttpException(error.sqlMessage, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            console.log(error);
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: 'Create failture!',
+            });
         }
     }
-    async removeAsync(id) {
+    async updateAsync(update, id, response, _account) {
         try {
-            return await this._familyTreeProvider.removeAsync(id);
+            const find = await this._familyTreeProvider.updateAsync(_account.id, id, update);
+            return response.status(common_1.HttpStatus.OK).json({
+                message: 'Update successfully!',
+                data: find,
+            });
         }
         catch (error) {
-            throw new common_1.HttpException(error.sqlMessage, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            console.log(error);
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: 'Update failture!',
+            });
         }
     }
-    async restoreAsync(id) {
+    async removeAsync(id, response, _account) {
         try {
-            return await this._familyTreeProvider.restoreAsync(id);
+            const find = await this._familyTreeProvider.removeAsync(_account.id, id);
+            return response.status(common_1.HttpStatus.OK).json({
+                message: 'Remove successfully!',
+                data: find,
+            });
         }
         catch (error) {
-            throw new common_1.HttpException(error.sqlMessage, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            console.log(error);
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: 'Remove failture!',
+            });
+        }
+    }
+    async restoreAsync(id, response, _account) {
+        try {
+            const result = await this._familyTreeProvider.restoreAsync(_account.id, id);
+            return response.status(common_1.HttpStatus.OK).json({
+                message: 'Restore successfully!',
+                data: result,
+            });
+        }
+        catch (error) {
+            console.log(error);
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: 'Restore failture!',
+            });
         }
     }
 };
@@ -87,45 +118,55 @@ __decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
+    __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], FamilyTreeController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Res)()),
+    __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], FamilyTreeController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Post)('create'),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, account_decorator_1.AccountDetail)()),
+    __param(1, (0, common_1.Res)()),
+    __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [family_tree_dto_1.CreateFamilyTreeDTO, account_decorator_1.AccountDetailDTO]),
+    __metadata("design:paramtypes", [family_tree_dto_1.CreateFamilyTreeDTO, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], FamilyTreeController.prototype, "createAsync", null);
 __decorate([
     (0, common_1.Post)(':id/update'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Param)('id')),
+    __param(2, (0, common_1.Res)()),
+    __param(3, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [family_tree_dto_1.UpdateFamilyTreeDTO, String]),
+    __metadata("design:paramtypes", [family_tree_dto_1.UpdateFamilyTreeDTO, String, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], FamilyTreeController.prototype, "updateAsync", null);
 __decorate([
     (0, common_1.Delete)(':id/remove'),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Res)()),
+    __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], FamilyTreeController.prototype, "removeAsync", null);
 __decorate([
     (0, common_1.Delete)(':id/restore'),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Res)()),
+    __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], FamilyTreeController.prototype, "restoreAsync", null);
 exports.FamilyTreeController = FamilyTreeController = __decorate([

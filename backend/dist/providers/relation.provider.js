@@ -18,51 +18,96 @@ const typeorm_1 = require("@nestjs/typeorm");
 const relation_1 = require("../entities/relation");
 const typeorm_2 = require("typeorm");
 const _ = require("lodash");
+const pagination_1 = require("../helper/pagination");
 let RelationProvider = class RelationProvider {
     constructor(relationRepository) {
         this.relationRepository = relationRepository;
     }
-    async findAllAsync(request) {
-        const { currentPage = 1, pageSize = 100 } = request.query;
-        const skip = (+currentPage - 1) * +pageSize;
+    async findAllAsync(accountId, request) {
+        const { skip, take, currentPage, perPage } = (0, pagination_1.queryHandler)(request.query);
         const result = this.relationRepository
-            .createQueryBuilder('family_tree')
-            .where(`family_tree.deletedAt IS NULL`)
-            .orderBy('family_tree.createdAt', 'DESC')
+            .createQueryBuilder('relation')
+            .where(`relation.deletedAt IS NULL`)
+            .andWhere(`relation.accountId = :accountId`, {
+            accountId: `${accountId}`,
+        })
+            .orderBy('relation.createdAt', 'DESC')
             .skip(+skip)
-            .take(+pageSize);
+            .take(+take);
         const count = await result.getCount();
-        const data = await result.getMany();
+        const list = await result.getMany();
+        if (count == 0)
+            throw new common_1.HttpException('Not Found', common_1.HttpStatus.NOT_FOUND);
         return {
             count,
-            data,
+            list,
+            currentPage,
+            perPage,
         };
     }
-    async findOneAsync(id) {
-        return this.relationRepository.findOneBy({ id });
+    async findOneAsync(accountId, id) {
+        const find = await this.relationRepository
+            .createQueryBuilder('relation')
+            .where(`relation.deletedAt IS NULL`)
+            .andWhere(`relation.id = :id`, {
+            id: `${id}`,
+        })
+            .andWhere(`relation.accountId = :accountId`, {
+            accountId: `${accountId}`,
+        })
+            .getOne();
+        if (!find)
+            throw new common_1.NotFoundException('relation Id ' + id + ' Not Found !');
+        return find;
     }
-    async addAsync(createRelationDTO) {
-        const create = this.relationRepository.create(createRelationDTO);
+    async addAsync(accountId, createRelationDTO) {
+        const create = this.relationRepository.create({
+            accountId,
+            ...createRelationDTO,
+        });
         await this.relationRepository.save(create);
         return create;
     }
-    async updateAsync(id, update) {
-        const find = await this.relationRepository.findOneBy({ id });
-        if (find) {
-            _(update).forEach((val, key) => {
-                if (val)
-                    find[key] = val;
-            });
-            return await this.relationRepository.save(find);
+    async updateAsync(accountId, id, update) {
+        const find = await this.relationRepository
+            .createQueryBuilder('relation')
+            .where(`relation.deletedAt IS NULL`)
+            .andWhere(`relation.id = :id`, {
+            id: `${id}`,
+        })
+            .andWhere(`relation.accountId = :accountId`, {
+            accountId: `${accountId}`,
+        })
+            .getOne();
+        if (!find)
+            throw new common_1.NotFoundException('relation Id ' + id + ' Not Found !');
+        else {
+            {
+                _(update).forEach((val, key) => {
+                    if (val)
+                        find[key] = val;
+                });
+                return await this.relationRepository.save(find);
+            }
         }
     }
-    async removeAsync(id) {
-        const find = await this.relationRepository.softDelete(id);
-        return find;
+    async removeAsync(accountId, id) {
+        const find = await this.relationRepository.softDelete({
+            id,
+            accountId,
+        });
+        if (find.affected > 0)
+            return 'Deleted relation Id ' + id + ' successfully !';
+        throw new common_1.NotFoundException('relation Id ' + id + ' Not Found !');
     }
-    async restoreAsync(id) {
-        const find = await this.relationRepository.restore(id);
-        return find;
+    async restoreAsync(accountId, id) {
+        const result = await this.relationRepository.restore({
+            id,
+            accountId,
+        });
+        if (result.affected > 0)
+            return 'Restore relation Id ' + id + ' successfully !';
+        throw new common_1.NotFoundException('relation Id ' + id + ' Not Found !');
     }
 };
 exports.RelationProvider = RelationProvider;

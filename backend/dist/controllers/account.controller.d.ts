@@ -1,13 +1,13 @@
-import { Request } from 'express';
-import { CreateAccountDTO, UpdateAccountDTO } from 'src/dto/account.dto';
+import { Request, Response } from 'express';
+import { CreateAccountDto, UpdateAccountDto } from 'src/dto/account.dto';
 import { AccountProvider } from 'src/providers/account.provider';
 export declare class AccountController {
     private _accountProvider;
     constructor(_accountProvider: AccountProvider);
-    findAll(request: Request): Promise<any>;
-    findOne(id: string): Promise<any>;
-    createAsync(create: CreateAccountDTO): Promise<any>;
-    updateAsync(update: UpdateAccountDTO, id: string): Promise<any>;
-    removeAsync(id: number): Promise<any>;
-    restoreAsync(id: number): Promise<any>;
+    findAll(request: Request, response: Response): Promise<any>;
+    findOne(id: string, response: Response): Promise<any>;
+    createAsync(create: CreateAccountDto, response: Response): Promise<any>;
+    updateAsync(update: UpdateAccountDto, id: string, response: Response): Promise<any>;
+    removeAsync(id: string, response: Response): Promise<any>;
+    restoreAsync(id: string, response: Response): Promise<any>;
 }

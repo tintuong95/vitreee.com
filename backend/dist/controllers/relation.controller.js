@@ -14,60 +14,102 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RelationController = void 0;
 const common_1 = require("@nestjs/common");
+const account_decorator_1 = require("../auth/account.decorator");
+const jwt_guard_provider_1 = require("../auth/jwt-guard.provider");
 const relation_dto_1 = require("../dto/relation.dto");
 const relation_provider_1 = require("../providers/relation.provider");
 let RelationController = class RelationController {
     constructor(_relationProvider) {
         this._relationProvider = _relationProvider;
     }
-    async findAll(request) {
+    async findAll(request, response, _account) {
         try {
-            return await this._relationProvider.findAllAsync(request);
+            const find = await this._relationProvider.findAllAsync(_account.id, request);
+            return response.status(common_1.HttpStatus.OK).json({
+                message: 'Find data successfully!',
+                data: find,
+            });
         }
         catch (error) {
             console.log(error);
-            throw new common_1.HttpException(error.sqlMessage, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: 'Find data failture!',
+            });
         }
     }
-    async findOne(id) {
+    async findOne(id, response, _account) {
         try {
-            return await this._relationProvider.findOneAsync(id);
-        }
-        catch (error) {
-            throw new common_1.HttpException(error.sqlMessage, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    async createAsync(create) {
-        try {
-            return await this._relationProvider.addAsync(create);
+            const find = await this._relationProvider.findOneAsync(_account.id, id);
+            return response.status(common_1.HttpStatus.OK).json({
+                message: 'Find data successfully!',
+                data: find,
+            });
         }
         catch (error) {
             console.log(error);
-            throw new common_1.HttpException(error.sqlMessage, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: 'Find data failture!',
+            });
         }
     }
-    async updateAsync(update, id) {
+    async createAsync(create, response, _account) {
         try {
-            return await this._relationProvider.updateAsync(id, update);
+            const find = await this._relationProvider.addAsync(_account.id, create);
+            return response.status(common_1.HttpStatus.OK).json({
+                message: 'Create successfully!',
+                data: find,
+            });
         }
         catch (error) {
-            throw new common_1.HttpException(error.sqlMessage, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            console.log(error);
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: 'Create failture!',
+            });
         }
     }
-    async removeAsync(id) {
+    async updateAsync(update, id, response, _account) {
         try {
-            return await this._relationProvider.removeAsync(id);
+            const find = await this._relationProvider.updateAsync(_account.id, id, update);
+            return response.status(common_1.HttpStatus.OK).json({
+                message: 'Update successfully!',
+                data: find,
+            });
         }
         catch (error) {
-            throw new common_1.HttpException(error.sqlMessage, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            console.log(error);
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: 'Update failture!',
+            });
         }
     }
-    async restoreAsync(id) {
+    async removeAsync(id, response, _account) {
         try {
-            return await this._relationProvider.restoreAsync(id);
+            const find = await this._relationProvider.removeAsync(_account.id, id);
+            return response.status(common_1.HttpStatus.OK).json({
+                message: 'Remove successfully!',
+                data: find,
+            });
         }
         catch (error) {
-            throw new common_1.HttpException(error.sqlMessage, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            console.log(error);
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: 'Remove failture!',
+            });
+        }
+    }
+    async restoreAsync(id, response, _account) {
+        try {
+            const result = await this._relationProvider.restoreAsync(_account.id, id);
+            return response.status(common_1.HttpStatus.OK).json({
+                message: 'Restore successfully!',
+                data: result,
+            });
+        }
+        catch (error) {
+            console.log(error);
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: 'Restore failture!',
+            });
         }
     }
 };
@@ -75,48 +117,61 @@ exports.RelationController = RelationController;
 __decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
+    __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], RelationController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Res)()),
+    __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], RelationController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Post)('create'),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
+    __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [relation_dto_1.CreateRelationDTO]),
+    __metadata("design:paramtypes", [relation_dto_1.CreateRelationDTO, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], RelationController.prototype, "createAsync", null);
 __decorate([
     (0, common_1.Post)(':id/update'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Param)('id')),
+    __param(2, (0, common_1.Res)()),
+    __param(3, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [relation_dto_1.UpdateRelationDTO, String]),
+    __metadata("design:paramtypes", [relation_dto_1.UpdateRelationDTO, String, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], RelationController.prototype, "updateAsync", null);
 __decorate([
     (0, common_1.Delete)(':id/remove'),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Res)()),
+    __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], RelationController.prototype, "removeAsync", null);
 __decorate([
     (0, common_1.Delete)(':id/restore'),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Res)()),
+    __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], RelationController.prototype, "restoreAsync", null);
 exports.RelationController = RelationController = __decorate([
     (0, common_1.Controller)('relation'),
+    (0, common_1.UseGuards)(jwt_guard_provider_1.JwtAuthGuard),
     __metadata("design:paramtypes", [relation_provider_1.RelationProvider])
 ], RelationController);
 //# sourceMappingURL=relation.controller.js.map

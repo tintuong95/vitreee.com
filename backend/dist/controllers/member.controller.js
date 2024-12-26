@@ -14,60 +14,102 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MemberController = void 0;
 const common_1 = require("@nestjs/common");
+const account_decorator_1 = require("../auth/account.decorator");
+const jwt_guard_provider_1 = require("../auth/jwt-guard.provider");
 const member_dto_1 = require("../dto/member.dto");
 const member_provider_1 = require("../providers/member.provider");
 let MemberController = class MemberController {
     constructor(_memberProvider) {
         this._memberProvider = _memberProvider;
     }
-    async findAll(request) {
+    async findAll(request, response, _account) {
         try {
-            return await this._memberProvider.findAllAsync(request);
+            const find = await this._memberProvider.findAllAsync(_account.id, request);
+            return response.status(common_1.HttpStatus.OK).json({
+                message: 'Find data successfully!',
+                data: find,
+            });
         }
         catch (error) {
             console.log(error);
-            throw new common_1.HttpException(error.sqlMessage, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: 'Find data failture!',
+            });
         }
     }
-    async findOne(id) {
+    async findOne(id, response, _account) {
         try {
-            return await this._memberProvider.findOneAsync(id);
-        }
-        catch (error) {
-            throw new common_1.HttpException(error.sqlMessage, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    async createAsync(create) {
-        try {
-            return await this._memberProvider.addAsync(create);
+            const find = await this._memberProvider.findOneAsync(_account.id, id);
+            return response.status(common_1.HttpStatus.OK).json({
+                message: 'Find data successfully!',
+                data: find,
+            });
         }
         catch (error) {
             console.log(error);
-            throw new common_1.HttpException(error.sqlMessage, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: 'Find data failture!',
+            });
         }
     }
-    async updateAsync(update, id) {
+    async createAsync(create, _account, response) {
         try {
-            return await this._memberProvider.updateAsync(id, update);
+            const find = await this._memberProvider.addAsync(_account.id, create);
+            return response.status(common_1.HttpStatus.OK).json({
+                message: 'Create successfully!',
+                data: find,
+            });
         }
         catch (error) {
-            throw new common_1.HttpException(error.sqlMessage, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            console.log(error);
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: 'Create failture!',
+            });
         }
     }
-    async removeAsync(id) {
+    async updateAsync(update, id, response, _account) {
         try {
-            return await this._memberProvider.removeAsync(id);
+            const find = await this._memberProvider.updateAsync(_account.id, id, update);
+            return response.status(common_1.HttpStatus.OK).json({
+                message: 'Update successfully!',
+                data: find,
+            });
         }
         catch (error) {
-            throw new common_1.HttpException(error.sqlMessage, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            console.log(error);
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: 'Update failture!',
+            });
         }
     }
-    async restoreAsync(id) {
+    async removeAsync(id, response, _account) {
         try {
-            return await this._memberProvider.restoreAsync(id);
+            const find = await this._memberProvider.removeAsync(_account.id, id);
+            return response.status(common_1.HttpStatus.OK).json({
+                message: 'Remove successfully!',
+                data: find,
+            });
         }
         catch (error) {
-            throw new common_1.HttpException(error.sqlMessage, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            console.log(error);
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: 'Remove failture!',
+            });
+        }
+    }
+    async restoreAsync(id, response, _account) {
+        try {
+            const result = await this._memberProvider.restoreAsync(_account.id, id);
+            return response.status(common_1.HttpStatus.OK).json({
+                message: 'Restore successfully!',
+                data: result,
+            });
+        }
+        catch (error) {
+            console.log(error);
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: 'Restore failture!',
+            });
         }
     }
 };
@@ -75,48 +117,62 @@ exports.MemberController = MemberController;
 __decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
+    __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], MemberController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Res)()),
+    __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], MemberController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Post)('create'),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, account_decorator_1.AccountDetail)()),
+    __param(2, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [member_dto_1.CreateMemberDTO]),
+    __metadata("design:paramtypes", [member_dto_1.CreateMemberDTO,
+        account_decorator_1.AccountDetailDTO, Object]),
     __metadata("design:returntype", Promise)
 ], MemberController.prototype, "createAsync", null);
 __decorate([
     (0, common_1.Post)(':id/update'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Param)('id')),
+    __param(2, (0, common_1.Res)()),
+    __param(3, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [member_dto_1.UpdateMemberDTO, String]),
+    __metadata("design:paramtypes", [member_dto_1.UpdateMemberDTO, String, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], MemberController.prototype, "updateAsync", null);
 __decorate([
     (0, common_1.Delete)(':id/remove'),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Res)()),
+    __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], MemberController.prototype, "removeAsync", null);
 __decorate([
     (0, common_1.Delete)(':id/restore'),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Res)()),
+    __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], MemberController.prototype, "restoreAsync", null);
 exports.MemberController = MemberController = __decorate([
     (0, common_1.Controller)('member'),
+    (0, common_1.UseGuards)(jwt_guard_provider_1.JwtAuthGuard),
     __metadata("design:paramtypes", [member_provider_1.MemberProvider])
 ], MemberController);
 //# sourceMappingURL=member.controller.js.map

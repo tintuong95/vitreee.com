@@ -1,13 +1,14 @@
-import { Request } from 'express';
+import { Request, Response } from 'express';
+import { AccountDetailDTO } from 'src/auth/account.decorator';
 import { CreateRelationDTO, UpdateRelationDTO } from 'src/dto/relation.dto';
 import { RelationProvider } from 'src/providers/relation.provider';
 export declare class RelationController {
     private _relationProvider;
     constructor(_relationProvider: RelationProvider);
-    findAll(request: Request): Promise<any>;
-    findOne(id: string): Promise<any>;
-    createAsync(create: CreateRelationDTO): Promise<any>;
-    updateAsync(update: UpdateRelationDTO, id: string): Promise<any>;
-    removeAsync(id: number): Promise<any>;
-    restoreAsync(id: number): Promise<any>;
+    findAll(request: Request, response: Response, _account: AccountDetailDTO): Promise<any>;
+    findOne(id: string, response: Response, _account: AccountDetailDTO): Promise<any>;
+    createAsync(create: CreateRelationDTO, response: Response, _account: AccountDetailDTO): Promise<any>;
+    updateAsync(update: UpdateRelationDTO, id: string, response: Response, _account: AccountDetailDTO): Promise<any>;
+    removeAsync(id: string, response: Response, _account: AccountDetailDTO): Promise<any>;
+    restoreAsync(id: string, response: Response, _account: AccountDetailDTO): Promise<any>;
 }

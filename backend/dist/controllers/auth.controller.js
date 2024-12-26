@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
+const account_decorator_1 = require("../auth/account.decorator");
+const jwt_guard_provider_1 = require("../auth/jwt-guard.provider");
 const account_dto_1 = require("../dto/account.dto");
 const account_provider_1 = require("../providers/account.provider");
 let AuthController = class AuthController {
@@ -22,34 +24,33 @@ let AuthController = class AuthController {
         this.jwtService = jwtService;
         this._accountProvider = _accountProvider;
     }
-    async authLoginAsync(signin) {
+    async authLoginAsync(signin, response) {
         try {
-            const account = await this._accountProvider.signInAsync(signin.email, signin.password);
+            let account = await this._accountProvider.signInAsync(signin.email, signin.password);
+            const temp = { ...account };
+            delete temp.password;
             if (account) {
-                const object = {
-                    id: account.id,
-                    name: account.email,
-                    status: account.status,
-                    createdAt: account.createdAt,
-                    updatedAt: account.updatedAt,
-                };
-                const accessToken = this.jwtService.sign(object);
-                return {
-                    acoount: object,
+                const accessToken = this.jwtService.sign(temp);
+                return response.status(common_1.HttpStatus.OK).json({
+                    account: temp,
                     accessToken,
                     time: new Date().toString(),
-                    message: "Logging successfully!"
-                };
+                    message: 'Logging successfully!',
+                });
             }
             else {
-                throw new common_1.HttpException('FORBIEDEN', common_1.HttpStatus.FORBIDDEN);
+                return response.status(common_1.HttpStatus.FORBIDDEN).json({
+                    message: 'FORBIDDEN!',
+                });
             }
         }
         catch (error) {
-            throw new common_1.HttpException(error.sqlMessage, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: 'BAD REQUEST!',
+            });
         }
     }
-    async authSignupAsync(signup) {
+    async authSignupAsync(signup, response) {
         try {
             const account = await this._accountProvider.addAsync(signup);
             if (account) {
@@ -61,37 +62,64 @@ let AuthController = class AuthController {
                     updatedAt: account.updatedAt,
                 };
                 const accessToken = this.jwtService.sign(object);
-                return {
-                    acoount: object,
+                return response.status(common_1.HttpStatus.OK).json({
+                    account: object,
                     accessToken,
                     time: new Date().toString(),
-                    message: "Signup successfully!"
-                };
+                    message: 'Signup successfully!',
+                });
             }
             else {
-                throw new common_1.HttpException('FORBIEDEN', common_1.HttpStatus.FORBIDDEN);
+                return response.status(common_1.HttpStatus.FORBIDDEN).json({
+                    message: 'FORBIDDEN!',
+                });
             }
         }
         catch (error) {
-            throw new common_1.HttpException(error.sqlMessage, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            return response.status(common_1.HttpStatus.BAD_REQUEST).json({
+                message: 'Signup failture!',
+            });
         }
+    }
+    async getProfile(user, response) {
+        if (!user)
+            return response.status(common_1.HttpStatus.FORBIDDEN).json({
+                message: 'FORBIDDEN!',
+            });
+        const rs = await this._accountProvider.findOneAsync(user.id);
+        delete rs.password;
+        return response.status(common_1.HttpStatus.OK).json({
+            account: rs,
+            message: 'Profile successfully!',
+        });
     }
 };
 exports.AuthController = AuthController;
 __decorate([
     (0, common_1.Post)('login'),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [account_dto_1.LoginDto, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "authLoginAsync", null);
 __decorate([
     (0, common_1.Post)('signup'),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [account_dto_1.CreateAccountDTO]),
+    __metadata("design:paramtypes", [account_dto_1.CreateAccountDto, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "authSignupAsync", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_guard_provider_1.JwtAuthGuard),
+    (0, common_1.Get)('profile'),
+    __param(0, (0, account_decorator_1.AccountDetail)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [account_decorator_1.AccountDetailDTO, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "getProfile", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [jwt_1.JwtService,

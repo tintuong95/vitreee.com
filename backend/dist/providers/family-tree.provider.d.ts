@@ -5,13 +5,15 @@ import { Request } from 'express';
 export declare class FamilyTreeProvider {
     private familyTreesRepository;
     constructor(familyTreesRepository: Repository<FamilyTree>);
-    findAllAsync(request: Request): Promise<{
+    findAllAsync(accountId: string, request: Request): Promise<{
         count: number;
         list: FamilyTree[];
+        currentPage: number;
+        perPage: number;
     }>;
-    findOneAsync(id: string): Promise<FamilyTree | null>;
+    findOneAsync(accountId: string, id: string): Promise<FamilyTree | null>;
     addAsync(accountId: string, createFamilyTreeDTO: CreateFamilyTreeDTO): Promise<FamilyTree>;
-    updateAsync(id: string, update: UpdateFamilyTreeDTO): Promise<FamilyTree>;
-    removeAsync(id: number): Promise<import("typeorm").UpdateResult>;
-    restoreAsync(id: number): Promise<import("typeorm").UpdateResult>;
+    updateAsync(accountId: string, id: string, update: UpdateFamilyTreeDTO): Promise<FamilyTree>;
+    removeAsync(accountId: string, id: string): Promise<string>;
+    restoreAsync(accountId: string, id: string): Promise<string>;
 }

@@ -1,13 +1,17 @@
+import { FAMILY_TREE_STATUS } from 'src/types/family-tree.type';
+import { Account } from './account';
+import { RE_ACCOUNT, RE_MEMBER } from 'src/contants';
+import { Member } from './member';
 export declare class FamilyTree {
     id: string;
-    accountId: string;
     name: string;
+    accountId: string;
     address: string;
-    members: number;
-    imageUrlCover: string;
     description: string;
-    status: number;
+    status: FAMILY_TREE_STATUS;
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date;
+    [RE_ACCOUNT]: Account;
+    [RE_MEMBER]: Member[];
 }

@@ -1,34 +1,40 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
-import { IsNumber, IsOptional, IsString, MaxLength } from 'class-validator';
+import {ApiProperty, PartialType} from '@nestjs/swagger';
+import {
+	IsNotEmpty,
+	IsUUID,
+	IsNumber,
+	Min,
+	Max,
+	IsOptional,
+	IsEnum,
+} from 'class-validator';
+import {RELATION_MEMBER_TYPE} from 'src/types/relation.type';
 
 export class CreateRelationDTO {
-  @IsString()
-  @IsNumber()
-  @IsOptional()
-  @ApiProperty()
-  @Expose()
-  type: number;
+	@IsOptional()
+	@IsEnum(RELATION_MEMBER_TYPE, {message: 'Quan hệ không hợp lệ'})
+	@ApiProperty({
+		description: 'Quan hệ của người dùng',
+		enum: RELATION_MEMBER_TYPE,
+		required: false,
+	})
+	type?: RELATION_MEMBER_TYPE;
 
-  @IsNumber()
-  @IsOptional()
-  @ApiProperty()
-  @Expose()
-  member_first_id: number;
+	@IsUUID('all', {message: 'ID tài khoản phải là UUID hợp lệ'})
+	@IsNotEmpty({message: 'ID tài khoản không được để trống'})
+	@ApiProperty({
+		description: 'ID của thành viên đầu tiên',
+		example: 1,
+	})
+	member_first_id: string;
 
-  @IsNumber()
-  @IsOptional()
-  @ApiProperty()
-  @Expose()
-  member_second_id: number;
-
-  @IsNumber()
-  @IsOptional()
-  @ApiProperty()
-  @Expose()
-  status: number;
-
-
+	@IsUUID('all', {message: 'ID tài khoản phải là UUID hợp lệ'})
+	@IsNotEmpty({message: 'ID tài khoản không được để trống'})
+	@ApiProperty({
+		description: 'ID của thành viên thứ hai',
+		example: 2,
+	})
+	member_second_id: string;
 }
 
-export class UpdateRelationDTO extends PartialType(CreateRelationDTO) { }
+export class UpdateRelationDTO extends PartialType(CreateRelationDTO) {}
