@@ -7,10 +7,12 @@ import {useNavigate} from 'react-router-dom';
 import {TbUserScan} from 'react-icons/tb';
 import {getMessageErrors, optionValidate} from '../../helper/validate';
 import Logo from '../../components/Logo';
+import {useDispatch} from 'react-redux';
+import {actionAuthLogin} from '../../store/auth/authAction';
 
 function LoginView(props) {
 	const [form] = Form.useForm();
-	// const dispatch = useDispatch();
+	const dispatch = useDispatch();
 	const [errors, setErrors] = useState([]);
 	const [fail, setFail] = useState(false);
 	const [loading, setLoading] = useState(false);
@@ -21,19 +23,21 @@ function LoginView(props) {
 		setLoading(true);
 
 		setErrors([]);
-		// const type = dispatch(loginAction(form.getFieldsValue()));
-		// type
-		// 	.then((r) => {
-		// 		if (r?.error != null) {
-		// 			setFail(true);
-		// 		}
-		// 	})
-		// 	.catch((e) => {
-		// 		console.log('e', e);
-		// 	})
-		// 	.finally((R) => {
-		// 		setLoading(false);
-		// 	});
+		// @ts-ignore
+		const fetchLogin = dispatch(actionAuthLogin(form.getFieldsValue()));
+
+		fetchLogin
+			.then((r) => {
+				if (r?.error != null) {
+					setFail(true);
+				}
+			})
+			.catch((e) => {
+				console.log('e', e);
+			})
+			.finally((R) => {
+				setLoading(false);
+			});
 	};
 	return (
 		<div
@@ -72,6 +76,7 @@ function LoginView(props) {
 							name='email'
 							noStyle={true}
 							validateStatus={form.getFieldError('email') ? '' : 'error'}
+							// @ts-ignore
 							rules={optionValidate(true, null, null, 5, 25, 'email')}>
 							<Input placeholder='example@vitreee.com' />
 						</Form.Item>
@@ -86,38 +91,41 @@ function LoginView(props) {
 							name='password'
 							noStyle={true}
 							validateStatus={form.getFieldError('password') ? '' : 'error'}
+							// @ts-ignore
 							rules={optionValidate(true, null, null, 5, 25, 'password')}>
-							<Input className='txtPassword' placeholder='*********' />
+							<Input.Password className='txtPassword' placeholder='*********' />
 						</Form.Item>
-						{errors.length > 0 && (
-							<Alert
-								className='rounded mt-5'
-								message={
-									<div className='flex flex-col text-gray-500' style={{fontSize: 13}}>
-										{errors?.map((o, i) => (
-											<div key={i}>{o}</div>
-										))}
-									</div>
-								}
-								type='warning'
-							/>
-						)}
-						{fail && (
-							<Alert
-								className='rounded mt-5'
-								message={
-									<div className='flex flex-col text-gray-500' style={{fontSize: 13}}>
-										{'Incorrect email or password. Please try again.'}
-									</div>
-								}
-								type='warning'
-							/>
-						)}
+						<div className='my-5'>
+							{errors.length > 0 && (
+								<Alert
+									className='rounded mt-5'
+									message={
+										<div className='flex flex-col text-gray-500' style={{fontSize: 13}}>
+											{errors?.map((o, i) => (
+												<div key={i}>{o}</div>
+											))}
+										</div>
+									}
+									type='warning'
+								/>
+							)}
+							{fail && (
+								<Alert
+									className='rounded mt-5'
+									message={
+										<div className='flex flex-col text-gray-500' style={{fontSize: 13}}>
+											{'Incorrect email or password. Please try again.'}
+										</div>
+									}
+									type='warning'
+								/>
+							)}
+						</div>
 						<Form.Item>
 							<Button
 								loading={loading}
 								icon={<SlLogin />}
-								className='w-full mt-5 font-semibold'
+								className='w-full mt-2 font-semibold'
 								type='primary'
 								htmlType='submit'>
 								ĐĂNG NHẬP

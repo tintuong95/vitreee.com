@@ -13,6 +13,12 @@ import {GrPowerReset} from 'react-icons/gr';
 import {AiOutlineHolder} from 'react-icons/ai';
 import {Link} from 'react-router-dom';
 import FamilyTreeBase from '../FamilyTree/FamilyTreeBase';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+	decrement,
+	fetchUserById,
+	increment,
+} from '../../store/features/counter/counterSlice';
 
 const items = (data) => [
 	{
@@ -147,27 +153,31 @@ const data = [
 		tags: ['cool', 'teacher'],
 	},
 ];
-const HomePage = () => (
-	<>
-		<div className='flex justify-between my-6 mx-4'>
-			<div>
-				<FamilyTreeBase />
-			</div>
-			<div>
-				<div className='flex items-center gap-2'>
-					<Input placeholder='Nhập Họ Tên' style={{width: 200}} />
-					<Button className='' type='default'>
-						<GrPowerReset />
-					</Button>
-					<Button type='primary'>Tìm kiếm</Button>
+const HomePage = () => {
+	// @ts-ignore
+	const dispatch = useDispatch();
+	return (
+		<>
+			<div className='flex justify-between my-6 mx-4'>
+				<div>
+					<FamilyTreeBase />
+				</div>
+				<div>
+					<div className='flex items-center gap-2'>
+						<Input placeholder='Nhập Họ Tên' style={{width: 200}} />
+						<Button className='' type='default'>
+							<GrPowerReset />
+						</Button>
+						<Button type='primary'>Tìm kiếm</Button>
+					</div>
 				</div>
 			</div>
-		</div>
-		<Table columns={columns} dataSource={data} pagination={false} />
-		<div className='mt-5 flex justify-end mx-3'>
-			{' '}
-			<Pagination defaultCurrent={6} total={500} />
-		</div>
-	</>
-);
+			<Table columns={columns} dataSource={data} pagination={false} />
+			<div className='mt-5 flex justify-end mx-3'>
+				{' '}
+				<Pagination defaultCurrent={6} total={500} />
+			</div>
+		</>
+	);
+};
 export default HomePage;

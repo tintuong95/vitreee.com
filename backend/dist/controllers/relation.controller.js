@@ -115,7 +115,7 @@ let RelationController = class RelationController {
 };
 exports.RelationController = RelationController;
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_1.Get)('list'),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
     __param(2, (0, account_decorator_1.AccountDetail)()),
@@ -124,7 +124,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], RelationController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)(':id'),
+    (0, common_1.Get)(':id/details'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Res)()),
     __param(2, (0, account_decorator_1.AccountDetail)()),

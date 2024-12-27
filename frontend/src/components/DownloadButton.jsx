@@ -3,22 +3,22 @@ import {
   Panel,
   useReactFlow,
   getNodesBounds,
-  getViewportForBounds,
+  getViewportForBounds
 } from '@xyflow/react';
 import { toPng } from 'html-to-image';
 import { IoCloudDownloadOutline } from 'react-icons/io5';
- 
+
 function downloadImage(dataUrl) {
   const a = document.createElement('a');
- 
+
   a.setAttribute('download', 'reactflow.png');
   a.setAttribute('href', dataUrl);
   a.click();
 }
- 
+
 const imageWidth = 1024;
 const imageHeight = 768;
- 
+
 function DownloadButton() {
   const { getNodes } = useReactFlow();
   const onClick = () => {
@@ -31,9 +31,9 @@ function DownloadButton() {
       imageWidth,
       imageHeight,
       0.5,
-      2,
+      2
     );
- 
+
     toPng(document.querySelector('.react-flow__viewport'), {
       backgroundColor: '#1a365d',
       width: imageWidth,
@@ -41,17 +41,17 @@ function DownloadButton() {
       style: {
         width: imageWidth,
         height: imageHeight,
-        transform: `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.zoom})`,
-      },
+        transform: `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.zoom})`
+      }
     }).then(downloadImage);
   };
- 
+
   return (
-    <button className='flex gap-2 items-center'  onClick={onClick}>
+    <button className='flex gap-2 items-center' onClick={onClick}>
       <IoCloudDownloadOutline />
-       Download
-      </button>
+      Download
+    </button>
   );
 }
- 
+
 export default DownloadButton;

@@ -113,7 +113,7 @@ let AccountController = class AccountController {
 };
 exports.AccountController = AccountController;
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_1.Get)('list'),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -121,7 +121,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AccountController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)(':id'),
+    (0, common_1.Get)(':id/details'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),

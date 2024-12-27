@@ -13,6 +13,7 @@ function App(props) {
 			<Route path='/' element={<MainLayout />}>
 				<Route path='tree' element={<TreeRootPage />} />
 				<Route path='/du-an' element={<FamilyTreeBase />} />
+				<Route path='/' element={<HomePage />} />
 			</Route>
 			<Route path='/dang-nhap' element={<LoginView />} />
 			<Route path='/dang-ky' element={<SignupView />} />
