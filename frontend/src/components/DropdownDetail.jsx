@@ -7,62 +7,69 @@ import { AiOutlineEdit } from 'react-icons/ai';
 import { TiFlowChildren } from 'react-icons/ti';
 import { FiHeart, FiTrash } from 'react-icons/fi';
 import DrawerRootDetail from './DrawerRootDetail';
-const items = [
-  {
-    key: '1',
-    label: 'Thao tác',
-    disabled: true,
-  },
-  {
-    type: 'divider',
-  },
-  {
-    key: '2',
-    label: <DrawerRootDetail/>,
-    icon: <MdInfoOutline />
-    ,
+import CreateMember from '../views/TreeRoot/CreateMember';
+import { useParams } from 'react-router-dom';
 
-  },
-  {
-    key: '3',
-    label: 'Cập nhật',
-    icon: <AiOutlineEdit />
-    ,
-
-  },
-  {
-    key: '4',
-    label: 'Thêm con cái',
-    icon: <TiFlowChildren />
-    ,
+const DropdownDetail = (data) => {
+  const {id}=useParams()
+  const items=(id,data) => [
+    {
+      key: '1',
+      label: 'Thao tác',
+      disabled: true,
+    },
+    {
+      type: 'divider',
+    },
+    {
+      key: '2',
+      label: <DrawerRootDetail/>,
+      icon: <MdInfoOutline />
+      ,
   
-  },
-  {
-    key: '5',
-    label: 'Thêm vợ chồng',
-    icon: <FiHeart />
-    ,
+    },
+    {
+      key: '3',
+      label: 'Cập nhật',
+      icon: <AiOutlineEdit />
+      ,
   
-  },
-  {
-    key: '5',
-    label: 'Xóa bỏ',
-    icon: <FiTrash />
-    ,
-    danger: true,
-
+    },
+    {
+      key: '4',
+      label: 'Thêm con cái',
+      icon: <TiFlowChildren />
+      ,
+    
+    },
+    {
+      key: '5',
+      label: <CreateMember familyTreeId={id} relationId={data?.data?.id}  relationType={"couple"}/>,
+      icon: <FiHeart />
+      ,
+    
+    },
+    {
+      key: '5',
+      label: 'Xóa bỏ',
+      icon: <FiTrash />
+      ,
+      danger: true,
   
-  },
-];
-const DropdownDetail = () => (
-  <Dropdown
-    menu={{
-      items,
-    }}
-  >
-    <a onClick={(e) => e.preventDefault()}>
-    <FaUserEdit className='text-gray-400 ' size={10} />
-    </a>
-  </Dropdown>
-);
+    
+    },
+  ];
+  console.log("Data",data?.data?.id)
+  return (
+    <Dropdown
+      menu={{
+        items:items(id,data),
+      }}
+    >
+      <a onClick={(e) => e.preventDefault()}>
+      <FaUserEdit className='text-gray-400 ' size={10} />
+      </a>
+    </Dropdown>
+  )
+};
 export default DropdownDetail;

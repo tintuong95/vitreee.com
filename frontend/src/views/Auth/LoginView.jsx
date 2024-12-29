@@ -93,7 +93,7 @@ function LoginView(props) {
 							validateStatus={form.getFieldError('password') ? '' : 'error'}
 							// @ts-ignore
 							rules={optionValidate(true, null, null, 5, 25, 'password')}>
-							<Input.Password className='txtPassword' placeholder='*********' />
+							<Input className='txtPassword' placeholder='*********' />
 						</Form.Item>
 						<div className='my-5'>
 							{errors.length > 0 && (

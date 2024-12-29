@@ -12,11 +12,11 @@ var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Relation = void 0;
 const swagger_1 = require("@nestjs/swagger");
-const typeorm_1 = require("typeorm");
 const class_validator_1 = require("class-validator");
-const relation_type_1 = require("../types/relation.type");
-const account_1 = require("./account");
 const contants_1 = require("../contants");
+const relation_type_1 = require("../types/relation.type");
+const typeorm_1 = require("typeorm");
+const account_1 = require("./account");
 let Relation = class Relation {
 };
 exports.Relation = Relation;

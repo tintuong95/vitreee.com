@@ -1,13 +1,5 @@
 import {ApiProperty, PartialType} from '@nestjs/swagger';
-import {
-	IsNotEmpty,
-	IsUUID,
-	IsNumber,
-	Min,
-	Max,
-	IsOptional,
-	IsEnum,
-} from 'class-validator';
+import {IsEnum, IsNotEmpty, IsOptional, IsUUID} from 'class-validator';
 import {RELATION_MEMBER_TYPE} from 'src/types/relation.type';
 
 export class CreateRelationDTO {

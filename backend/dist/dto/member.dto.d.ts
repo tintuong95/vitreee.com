@@ -10,6 +10,7 @@ export declare class CreateMemberDTO {
     birth_date: string;
     dead_date: string;
     gender?: GENDER_TYPE;
+    type?: number;
 }
 declare const UpdateMemberDTO_base: import("@nestjs/common").Type<Partial<CreateMemberDTO>>;
 export declare class UpdateMemberDTO extends UpdateMemberDTO_base {

@@ -1,6 +1,6 @@
+import { RE_ACCOUNT, RE_FAMILY_TREE } from 'src/contants';
 import { GENDER_TYPE } from 'src/types/index.type';
 import { Account } from './account';
-import { RE_ACCOUNT, RE_FAMILY_TREE } from 'src/contants';
 import { FamilyTree } from './family-tree';
 import { Relation } from './relation';
 export declare class Member {
@@ -16,6 +16,7 @@ export declare class Member {
     birth_date: string;
     dead_date: string;
     gender: GENDER_TYPE;
+    type: number;
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date;

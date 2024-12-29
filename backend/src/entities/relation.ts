@@ -1,19 +1,18 @@
 import {ApiProperty} from '@nestjs/swagger';
-import {
-	Entity,
-	Column,
-	PrimaryGeneratedColumn,
-	CreateDateColumn,
-	UpdateDateColumn,
-	DeleteDateColumn,
-	ManyToOne,
-	JoinColumn,
-	OneToOne,
-} from 'typeorm';
-import {IsNotEmpty, IsUUID, IsNumber, Min, Max, IsEnum} from 'class-validator';
-import {RELATION_MEMBER_TYPE} from 'src/types/relation.type';
-import {Account} from './account';
+import {IsEnum, IsNotEmpty, IsUUID} from 'class-validator';
 import {RE_ACCOUNT, RE_RELATION} from 'src/contants';
+import {RELATION_MEMBER_TYPE} from 'src/types/relation.type';
+import {
+	Column,
+	CreateDateColumn,
+	DeleteDateColumn,
+	Entity,
+	JoinColumn,
+	ManyToOne,
+	PrimaryGeneratedColumn,
+	UpdateDateColumn,
+} from 'typeorm';
+import {Account} from './account';
 
 @Entity()
 export class Relation {

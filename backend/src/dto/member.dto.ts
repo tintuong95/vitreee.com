@@ -1,16 +1,15 @@
 import {ApiProperty, PartialType} from '@nestjs/swagger';
 import {
-	IsNotEmpty,
-	IsString,
-	IsEmail,
-	IsOptional,
 	IsDateString,
-	IsNumber,
-	IsUUID,
-	MinLength,
-	MaxLength,
-	Matches,
+	IsEmail,
 	IsEnum,
+	IsNotEmpty,
+	IsNumber,
+	IsOptional,
+	IsString,
+	Matches,
+	MaxLength,
+	MinLength,
 } from 'class-validator';
 import {GENDER_TYPE} from 'src/types/index.type';
 
@@ -112,6 +111,14 @@ export class CreateMemberDTO {
 		required: false,
 	})
 	gender?: GENDER_TYPE;
+
+	@IsOptional()
+	@IsNumber({}, {message: 'Loại thành viên không hợp lệ'})
+	@ApiProperty({
+		description: 'Loại thành viên',
+		required: false,
+	})
+	type?: number;
 }
 
 export class UpdateMemberDTO extends PartialType(CreateMemberDTO) {}

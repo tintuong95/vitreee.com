@@ -1,6 +1,6 @@
+import { RE_ACCOUNT } from 'src/contants';
 import { RELATION_MEMBER_TYPE } from 'src/types/relation.type';
 import { Account } from './account';
-import { RE_ACCOUNT } from 'src/contants';
 export declare class Relation {
     id: string;
     accountId: string;

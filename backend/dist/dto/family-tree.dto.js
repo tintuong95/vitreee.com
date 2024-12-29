@@ -55,15 +55,6 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], CreateFamilyTreeDTO.prototype, "description", void 0);
-__decorate([
-    (0, class_validator_1.IsEnum)(family_tree_type_1.FAMILY_TREE_STATUS, { message: 'Trạng thái dự án không hợp lệ' }),
-    (0, swagger_1.ApiProperty)({
-        description: 'Trạng thái dự án',
-        enum: family_tree_type_1.FAMILY_TREE_STATUS,
-        example: family_tree_type_1.FAMILY_TREE_STATUS.unpublished,
-    }),
-    __metadata("design:type", Number)
-], CreateFamilyTreeDTO.prototype, "status", void 0);
 class UpdateFamilyTreeDTO {
 }
 exports.UpdateFamilyTreeDTO = UpdateFamilyTreeDTO;

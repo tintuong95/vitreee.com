@@ -117,6 +117,15 @@ __decorate([
     }),
     __metadata("design:type", Number)
 ], CreateMemberDTO.prototype, "gender", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNumber)({}, { message: 'Loại thành viên không hợp lệ' }),
+    (0, swagger_1.ApiProperty)({
+        description: 'Loại thành viên',
+        required: false,
+    }),
+    __metadata("design:type", Number)
+], CreateMemberDTO.prototype, "type", void 0);
 class UpdateMemberDTO extends (0, swagger_1.PartialType)(CreateMemberDTO) {
 }
 exports.UpdateMemberDTO = UpdateMemberDTO;

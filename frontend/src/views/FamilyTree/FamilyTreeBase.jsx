@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+	Avatar,
 	Button,
 	Dropdown,
 	Image,
@@ -17,13 +18,14 @@ import { useMitt } from 'react-mitt';
 import { useDispatch } from 'react-redux';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import CreateTreeBaseModal from './CreateTreeBaseModal';
+import CreateTreeBaseModal from './FamilyTreeCreate';
 import {
 	apiFamilyTreeRemove,
 	apiGetListFamilyTree
 } from '../../apis/familyTree';
 import { openNotification } from '../../helper/notification';
 import { NOTIFICATION_TYPE } from '../../constant';
+import { MdOutlineFamilyRestroom } from 'react-icons/md';
 
 const initial = {
 	currentPage: 1,
@@ -39,7 +41,7 @@ const items = (data) => [
 	{
 		key: '1',
 		label: (
-			<Link to='/tree' rel='noopener noreferrer'>
+			<Link to={'/pha-he/' + data?.id} rel='noopener noreferrer'>
 				Chi tiết
 			</Link>
 		)
@@ -47,7 +49,7 @@ const items = (data) => [
 	{
 		key: '2',
 		label: (
-			<Link to='/familyTree/update' rel='noopener noreferrer'>
+			<Link to={`/du-an/${data?.id}/cap-nhat`} rel='noopener noreferrer'>
 				Cập nhật
 			</Link>
 		)
@@ -76,12 +78,9 @@ const columns = [
 		dataIndex: 'cover_image_url',
 		key: 'cover_image_url',
 		render: (text, _, index) => (
-			<Image
-				preview={false}
-				width={90}
-				className='rounded-md shadow-md'
-				src='https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-			/>
+			
+			<Avatar size={37} icon={<MdOutlineFamilyRestroom  />} />
+
 		)
 	},
 	{
@@ -110,20 +109,20 @@ const columns = [
 			console.log('text', text);
 			if (text == 0) {
 				return (
-					<Tag className='py-1 px-4 uppercase' color='gray'>
+					<Tag className='py-0.5  uppercase w-28 text-center' color='gray'>
 						Bản nháp
 					</Tag>
 				);
 			}
 			if (text == 1) {
 				return (
-					<Tag className='py-1 px-4 uppercase' color='blue'>
+					<Tag className='py-0.5  uppercase w-28 text-center' color='blue'>
 						Hoạt động
 					</Tag>
 				);
 			}
 			return (
-				<Tag className='py-1 px-4 uppercase' color='red'>
+				<Tag className='py-0.5  uppercase w-28 text-center' color='red'>
 					Đang khóa
 				</Tag>
 			);

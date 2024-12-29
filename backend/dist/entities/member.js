@@ -12,11 +12,11 @@ var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Member = void 0;
 const swagger_1 = require("@nestjs/swagger");
-const typeorm_1 = require("typeorm");
 const class_validator_1 = require("class-validator");
-const index_type_1 = require("../types/index.type");
-const account_1 = require("./account");
 const contants_1 = require("../contants");
+const index_type_1 = require("../types/index.type");
+const typeorm_1 = require("typeorm");
+const account_1 = require("./account");
 const family_tree_1 = require("./family-tree");
 const relation_1 = require("./relation");
 let Member = class Member {
@@ -157,6 +157,15 @@ __decorate([
     }),
     __metadata("design:type", Number)
 ], Member.prototype, "gender", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: 0 }),
+    (0, class_validator_1.IsNumber)({}, { message: 'Loại thành viên phải là số' }),
+    (0, swagger_1.ApiProperty)({
+        description: 'Loại của thành viên (0: Hoạt động, 1: Không hoạt động)',
+        example: 0,
+    }),
+    __metadata("design:type", Number)
+], Member.prototype, "type", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     (0, swagger_1.ApiProperty)({

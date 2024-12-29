@@ -30,16 +30,9 @@ export const authSlice = createSlice({
 	initialState,
 	reducers: {
 		evtLogout: (state) => {
-			console.log('loggg');
 			state.error.logging = false;
 			state.loading = true;
 			state.isLogin = false;
-			state.id = null;
-			state.accountId = null;
-			state.username = null;
-			state.nameHotel = null;
-			state.expiredAt = null;
-			state.type = null;
 			localStorage.clear();
 			history.push('/dang-nhap');
 		},
@@ -51,24 +44,15 @@ export const authSlice = createSlice({
 	extraReducers: (builder) => {
 		//state, action
 		builder.addCase(actionAuthLogin.fulfilled, (state, action) => {
-			// @ts-ignore
 			const user = action.payload;
-			// @ts-ignore
 			localStorage.setItem('accessToken', user.accessToken);
-			// @ts-ignore
 			localStorage.setItem('id', user.account.id);
-			// @ts-ignore
 			localStorage.setItem('fullName', user.account.fullName);
-			// @ts-ignore
 			localStorage.setItem('email', user.account.email);
-			// @ts-ignore
 			localStorage.setItem('phone', user.account.phone);
-			// @ts-ignore
 			localStorage.setItem('photo', user.account.photo);
-			// @ts-ignore
 			localStorage.setItem('dateOfBirth', user.account.dateOfBirth);
 			state.isLogin = true;
-			// @ts-ignore
 			state.id = user.account.id;
 			history.push('/');
 		});
@@ -107,7 +91,6 @@ export const authSlice = createSlice({
 
 		//state, action
 		builder.addCase(actionAuthProfile.fulfilled, (state, action) => {
-			// @ts-ignore
 			const user = action.payload;
 
 			// localStorage.setItem('accessToken', user.accessToken);

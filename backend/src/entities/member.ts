@@ -1,30 +1,30 @@
 import {ApiProperty} from '@nestjs/swagger';
 import {
-	Entity,
+	IsDateString,
+	IsEmail,
+	IsEnum,
+	IsNotEmpty,
+	IsNumber,
+	IsOptional,
+	IsString,
+	IsUUID,
+	Matches,
+	MaxLength,
+	MinLength,
+} from 'class-validator';
+import {RE_ACCOUNT, RE_FAMILY_TREE, RE_MEMBER, RE_RELATION} from 'src/contants';
+import {GENDER_TYPE} from 'src/types/index.type';
+import {
 	Column,
-	PrimaryGeneratedColumn,
 	CreateDateColumn,
-	UpdateDateColumn,
 	DeleteDateColumn,
+	Entity,
 	ManyToOne,
 	OneToOne,
+	PrimaryGeneratedColumn,
+	UpdateDateColumn,
 } from 'typeorm';
-import {
-	IsNotEmpty,
-	IsString,
-	IsEmail,
-	IsOptional,
-	IsDateString,
-	IsNumber,
-	IsUUID,
-	MinLength,
-	MaxLength,
-	Matches,
-	IsEnum,
-} from 'class-validator';
-import {GENDER_TYPE} from 'src/types/index.type';
 import {Account} from './account';
-import {RE_ACCOUNT, RE_FAMILY_TREE, RE_MEMBER, RE_RELATION} from 'src/contants';
 import {FamilyTree} from './family-tree';
 import {Relation} from './relation';
 
@@ -157,13 +157,13 @@ export class Member {
 	})
 	gender: GENDER_TYPE;
 
-	// @Column({ default: 0 })
-	// @IsNumber({}, { message: 'Trạng thái phải là số' })
-	// @ApiProperty({
-	//   description: 'Trạng thái của thành viên (0: Hoạt động, 1: Không hoạt động)',
-	//   example: 0,
-	// })
-	// status: number;
+	@Column({default: 0})
+	@IsNumber({}, {message: 'Loại thành viên phải là số'})
+	@ApiProperty({
+		description: 'Loại của thành viên (0: Hoạt động, 1: Không hoạt động)',
+		example: 0,
+	})
+	type: number;
 
 	@CreateDateColumn()
 	@ApiProperty({
