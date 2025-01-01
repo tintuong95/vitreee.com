@@ -1,11 +1,11 @@
+import { RE_FAMILY_TREE, RE_MEMBER, RE_RELATION } from 'src/contants';
 import { ACCOUNT_STATUS } from 'src/types/account.type';
 import { GENDER_TYPE } from 'src/types/index.type';
-import { RE_FAMILY_TREE, RE_MEMBER, RE_RELATION } from 'src/contants';
-import { Member } from './member';
 import { FamilyTree } from './family-tree';
+import { Member } from './member';
 import { Relation } from './relation';
 export declare class Account {
-    id: string;
+    id: number;
     email: string;
     password: string;
     fullName: string;

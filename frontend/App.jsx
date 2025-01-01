@@ -9,6 +9,8 @@ import SignupView from './src/views/Auth/SignupView';
 import { useSelector } from 'react-redux';
 import DefaultLayout from './src/layout/DefaultLayout';
 import FamilyTreeUpdate from './src/views/FamilyTree/FamilyTreeUpdate';
+import FamilyDetail from './src/views/FamilyTree/FamilyDetail';
+import BackLayout from './src/layout/BackLayout';
 
 function App(props) {
 	const { isLogin } = useSelector((state) => state.auth);
@@ -16,20 +18,21 @@ function App(props) {
 
 	return (
 		<Routes>
-			
-				<Route path='/' element={<MainLayout />}>
-					<Route path='/pha-he/:id' element={<TreeRootPage />} />
-					<Route path='/du-an' element={<FamilyTreeBase />} />
-					<Route path='/du-an/:id/cap-nhat' element={<FamilyTreeUpdate />} />
-					<Route path='/' element={<HomePage />} />
+			<Route path='/' element={<MainLayout />}>
+				<Route path='/project/:id/visual' element={<TreeRootPage />} />
+				<Route path='/' element={<BackLayout />}>
+					<Route path='/project' element={<FamilyTreeBase />} />
+					<Route path='/project/:id/update' element={<FamilyTreeUpdate />} />
+					<Route path='/project/:id/details' element={<FamilyDetail />} />
 				</Route>
-			
-		
-				<Route path='/' element={<DefaultLayout/>}>
-					<Route path='/dang-nhap' element={<LoginView />} />
-					<Route path='/dang-ky' element={<SignupView />} />
-				</Route>
-			
+
+				<Route path='/' element={<HomePage />} />
+			</Route>
+
+			<Route path='/' element={<DefaultLayout />}>
+				<Route path='/login' element={<LoginView />} />
+				<Route path='/sign-up' element={<SignupView />} />
+			</Route>
 		</Routes>
 	);
 }

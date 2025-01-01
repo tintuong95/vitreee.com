@@ -4,9 +4,9 @@ import { Account } from './account';
 import { FamilyTree } from './family-tree';
 import { Relation } from './relation';
 export declare class Member {
-    id: string;
-    accountId: string;
-    familyTreeId: string;
+    id: number;
+    accountId: number;
+    familyTreeId: number;
     fullName: string;
     phone: string;
     email: string;

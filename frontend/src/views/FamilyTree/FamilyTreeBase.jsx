@@ -13,7 +13,7 @@ import {
 } from 'antd';
 import { GrPowerReset } from 'react-icons/gr';
 import { AiOutlineHolder } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useMitt } from 'react-mitt';
 import { useDispatch } from 'react-redux';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -26,145 +26,19 @@ import {
 import { openNotification } from '../../helper/notification';
 import { NOTIFICATION_TYPE } from '../../constant';
 import { MdOutlineFamilyRestroom } from 'react-icons/md';
+import { IoArrowBack } from 'react-icons/io5';
 
 const initial = {
 	currentPage: 1,
 	perPage: 10,
 	name: null,
-	idCard: null
 };
-const filter = {
-	name: '',
-	lastName: ''
-};
-const items = (data) => [
-	{
-		key: '1',
-		label: (
-			<Link to={'/pha-he/' + data?.id} rel='noopener noreferrer'>
-				Chi tiết
-			</Link>
-		)
-	},
-	{
-		key: '2',
-		label: (
-			<Link to={`/du-an/${data?.id}/cap-nhat`} rel='noopener noreferrer'>
-				Cập nhật
-			</Link>
-		)
-	},
 
-	{
-		key: '4',
-		danger: true,
-
-		label: (
-			<div aria-hidden style={{ width: 200 }}>
-				Xóa bỏ
-			</div>
-		)
-	}
-];
-const columns = [
-	{
-		title: '#',
-		dataIndex: 'id',
-		key: 'id',
-		render: (text, _, index) => <a>{++index}</a>
-	},
-	{
-		title: 'Hình ảnh',
-		dataIndex: 'cover_image_url',
-		key: 'cover_image_url',
-		render: (text, _, index) => (
-			
-			<Avatar size={37} icon={<MdOutlineFamilyRestroom  />} />
-
-		)
-	},
-	{
-		title: 'Tên dự án',
-		dataIndex: 'name',
-		key: 'name',
-		render: (text) => <a>{text}</a>
-	},
-	{
-		title: 'Thành viên',
-		dataIndex: 'member',
-		key: 'member',
-		render: (text) => <a>{1000}</a>
-	},
-	{
-		title: 'Địa chỉ',
-		dataIndex: 'address',
-		key: 'address',
-		render: (text) => <a>{text}</a>
-	},
-	{
-		title: 'Trạng thái',
-		key: 'status',
-		dataIndex: 'status',
-		render: (text) => {
-			console.log('text', text);
-			if (text == 0) {
-				return (
-					<Tag className='py-0.5  uppercase w-28 text-center' color='gray'>
-						Bản nháp
-					</Tag>
-				);
-			}
-			if (text == 1) {
-				return (
-					<Tag className='py-0.5  uppercase w-28 text-center' color='blue'>
-						Hoạt động
-					</Tag>
-				);
-			}
-			return (
-				<Tag className='py-0.5  uppercase w-28 text-center' color='red'>
-					Đang khóa
-				</Tag>
-			);
-		}
-	},
-	{
-		title: 'Ngày tạo',
-		dataIndex: 'createdAt',
-		key: 'createdAt',
-		render: (_, record) => (
-			<>
-				<div>{moment(record.createdAt).format('HH:mm DD/MM/YYYY')}</div>
-				<small className='text-gray-300'>
-					{moment(record.updatedAt).format('HH:mm DD/MM/YYYY')}
-				</small>
-			</>
-		)
-	},
-	{
-		title: 'Thao tác',
-		key: 'action',
-
-		render: (_, record) => (
-			<Dropdown
-				className='w-48'
-				menu={{
-					items: items(record)
-				}}
-			>
-				<a className='text-sky-600 ' href='#sda' onClick={(e) => e.preventDefault()}>
-					<Space>
-						<AiOutlineHolder />
-					</Space>
-				</a>
-			</Dropdown>
-		)
-	}
-];
 
 function FamilyTreeBase() {
 	const [paramList, setParamList] = useState(initial);
 	const [familyTreeList, setFamilyTreeList] = useState([]);
+	const navigate = useNavigate();
 	const [modal, contextHolder] = Modal.useModal();
 	const { emitter } = useMitt();
 	const dispatch = useDispatch();
@@ -178,18 +52,146 @@ function FamilyTreeBase() {
 			onOk: () => onRemove(id)
 		});
 	};
+	const items = (data) => [
+		{
+			key: '1',
+			label: (
+				<Link to={'/project/' + data?.id + '/visual'} rel='noopener noreferrer'>
+					Chi tiết
+				</Link>
+			)
+		},
+		{
+			key: '3',
+			label: (
+				<Link to={'/project/' + data?.id + '/details'} rel='noopener noreferrer'>
+					Giới thiệu
+				</Link>
+			)
+		},
+		{
+			key: '2',
+			label: (
+				<Link to={`/project/${data?.id}/update`} rel='noopener noreferrer'>
+					Cập nhật
+				</Link>
+			)
+		},
 
+		{
+			key: '4',
+			danger: true,
+
+			label: (
+				<div onClick={() => confirm(data?.id)} aria-hidden style={{ width: 180 }}>
+					Xóa bỏ
+				</div>
+			)
+		}
+	];
+	const columns = [
+		{
+			title: '#',
+			dataIndex: 'id',
+			key: 'id',
+			render: (text, _, index) => <a>{++index}</a>
+		},
+		{
+			title: 'Hình ảnh',
+			dataIndex: 'cover_image_url',
+			key: 'cover_image_url',
+			render: (text, _, index) => (
+				<Avatar size={37} icon={<MdOutlineFamilyRestroom />} />
+			)
+		},
+		{
+			title: 'Tên dự án',
+			dataIndex: 'name',
+			key: 'name',
+			render: (text) => <a>{text}</a>
+		},
+		// {
+		// 	title: 'Thành viên',
+		// 	dataIndex: 'member',
+		// 	key: 'member',
+		// 	render: (text) => <a>{1000}</a>
+		// },
+		{
+			title: 'Địa chỉ',
+			dataIndex: 'address',
+			key: 'address',
+			render: (text) => <a>{text}</a>
+		},
+		{
+			title: 'Trạng thái',
+			key: 'status',
+			dataIndex: 'status',
+			render: (text) => {
+				if (text == 0) {
+					return (
+						<Tag className='py-0.5  uppercase w-28 text-center' color='gray'>
+							Bản nháp
+						</Tag>
+					);
+				}
+				if (text == 1) {
+					return (
+						<Tag className='py-0.5  uppercase w-28 text-center' color='blue'>
+							Hoạt động
+						</Tag>
+					);
+				}
+				return (
+					<Tag className='py-0.5  uppercase w-28 text-center' color='red'>
+						Đang khóa
+					</Tag>
+				);
+			}
+		},
+		{
+			title: 'Ngày tạo',
+			dataIndex: 'createdAt',
+			key: 'createdAt',
+			render: (_, record) => (
+				<>
+					<div>{moment(record.createdAt).format('HH:mm DD/MM/YYYY')}</div>
+					<small className='text-gray-300'>
+						{moment(record.updatedAt).format('HH:mm DD/MM/YYYY')}
+					</small>
+				</>
+			)
+		},
+		{
+			title: 'Thao tác',
+			key: 'action',
+
+			render: (_, record) => (
+				<Dropdown
+					className='w-48'
+					menu={{
+						items: items(record)
+					}}
+				>
+					<a className='text-sky-600 ' href='#sda' onClick={(e) => e.preventDefault()}>
+						<Space>
+							<AiOutlineHolder />
+						</Space>
+					</a>
+				</Dropdown>
+			)
+		}
+	];
 	const onRemove = (id) => {
 		apiFamilyTreeRemove(id)
 			.then((_) => openNotification(NOTIFICATION_TYPE.success, 'Xóa thành công !'))
-			.then((_) => getListFamilyTree())
+			.then((_) => getListFamilyTree(paramList))
 			.catch((err) => openNotification(NOTIFICATION_TYPE.error, 'Xóa thất bại !'));
 	};
-	const getListFamilyTree = () => {
+	const getListFamilyTree = (paramList) => {
 		emitter.emit('pendingOn');
 		apiGetListFamilyTree(paramList)
 			.then((response) => {
-				setFamilyTreeList(response.data?.list);
+				setFamilyTreeList(response.data);
 
 				console.log(response);
 			})
@@ -207,29 +209,53 @@ function FamilyTreeBase() {
 	// });
 	useEffect(() => {
 		getListFamilyTree();
-	}, [paramList]);
+	}, []);
 	return (
 		<>
 			<div className='flex justify-between my-6 mx-4'>
+				{contextHolder}
 				<div>
-					<CreateTreeBaseModal />
+					<CreateTreeBaseModal
+						paramList={paramList}
+						getListFamilyTree={getListFamilyTree}
+					/>
 				</div>
 				<div>
 					<div className='flex items-center gap-2'>
-						<Input placeholder='Nhập Họ Tên' style={{ width: 200 }} />
-						<Button className='' type='default'>
+						<Input
+							onChange={(e) => {
+								setParamList({ ...paramList, name: e.target.value });
+							}}
+							value={paramList?.name}
+							placeholder='Nhập tên cần tìm'
+							style={{ width: 200 }}
+						/>
+						<Button
+							onClick={() => {
+								setParamList(initial);
+							}}
+							className=''
+							type='default'
+						>
 							<GrPowerReset />
 						</Button>
-						<Button type='primary'>Tìm kiếm</Button>
+						<Button
+							onClick={() => {
+								getListFamilyTree(paramList);
+							}}
+							type='primary'
+						>
+							Tìm kiếm
+						</Button>
 					</div>
 				</div>
 			</div>
-			<Table columns={columns} dataSource={familyTreeList} pagination={false} />
+			<Table columns={columns} dataSource={familyTreeList?.data} pagination={false} />
 			<div className='mt-5 flex justify-end mx-3'>
 				{' '}
 				<Pagination
-					defaultCurrent={paramList?.currentPage}
-					total={paramList?.perPage}
+					defaultCurrent={familyTreeList?.meta?.total}
+					total={familyTreeList?.meta?.currentPage}
 				/>
 			</div>
 		</>

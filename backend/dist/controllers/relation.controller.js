@@ -25,10 +25,17 @@ let RelationController = class RelationController {
     async findAll(request, response, _account) {
         try {
             const find = await this._relationProvider.findAllAsync(_account.id, request);
-            return response.status(common_1.HttpStatus.OK).json({
-                message: 'Find data successfully!',
-                data: find,
-            });
+            if (find.count == 0) {
+                return response.status(common_1.HttpStatus.OK).json({
+                    message: 'Data not found!',
+                });
+            }
+            else {
+                return response.status(common_1.HttpStatus.OK).json({
+                    message: 'Find data successfully!',
+                    data: find,
+                });
+            }
         }
         catch (error) {
             console.log(error);
@@ -129,7 +136,7 @@ __decorate([
     __param(1, (0, common_1.Res)()),
     __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object, account_decorator_1.AccountDetailDTO]),
+    __metadata("design:paramtypes", [Number, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], RelationController.prototype, "findOne", null);
 __decorate([
@@ -148,7 +155,7 @@ __decorate([
     __param(2, (0, common_1.Res)()),
     __param(3, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [relation_dto_1.UpdateRelationDTO, String, Object, account_decorator_1.AccountDetailDTO]),
+    __metadata("design:paramtypes", [relation_dto_1.UpdateRelationDTO, Number, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], RelationController.prototype, "updateAsync", null);
 __decorate([
@@ -157,7 +164,7 @@ __decorate([
     __param(1, (0, common_1.Res)()),
     __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object, account_decorator_1.AccountDetailDTO]),
+    __metadata("design:paramtypes", [Number, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], RelationController.prototype, "removeAsync", null);
 __decorate([
@@ -166,7 +173,7 @@ __decorate([
     __param(1, (0, common_1.Res)()),
     __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object, account_decorator_1.AccountDetailDTO]),
+    __metadata("design:paramtypes", [Number, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], RelationController.prototype, "restoreAsync", null);
 exports.RelationController = RelationController = __decorate([

@@ -5,9 +5,9 @@ export declare class AccountController {
     private _accountProvider;
     constructor(_accountProvider: AccountProvider);
     findAll(request: Request, response: Response): Promise<any>;
-    findOne(id: string, response: Response): Promise<any>;
+    findOne(id: number, response: Response): Promise<any>;
     createAsync(create: CreateAccountDto, response: Response): Promise<any>;
-    updateAsync(update: UpdateAccountDto, id: string, response: Response): Promise<any>;
-    removeAsync(id: string, response: Response): Promise<any>;
-    restoreAsync(id: string, response: Response): Promise<any>;
+    updateAsync(update: UpdateAccountDto, id: number, response: Response): Promise<any>;
+    removeAsync(id: number, response: Response): Promise<any>;
+    restoreAsync(id: number, response: Response): Promise<any>;
 }

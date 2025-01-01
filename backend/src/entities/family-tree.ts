@@ -15,7 +15,7 @@ import {
 	MinLength,
 	MaxLength,
 	IsEnum,
-	IsUUID,
+	IsNumber,
 } from 'class-validator';
 import {FAMILY_TREE_STATUS} from 'src/types/family-tree.type';
 import {Account} from './account';
@@ -24,12 +24,12 @@ import {Member} from './member';
 
 @Entity()
 export class FamilyTree {
-	@PrimaryGeneratedColumn('uuid')
+	@PrimaryGeneratedColumn()
 	@ApiProperty({
-		description: 'ID của cây phả hệ (UUID)',
-		example: '123e4567-e89b-12d3-a456-426614174000',
+		description: 'ID của mối quan hệ ',
+		example: '1',
 	})
-	id: string;
+	id: number;
 
 	@Column()
 	@IsNotEmpty({message: 'Tên cây phả hệ không được để trống'})
@@ -45,13 +45,13 @@ export class FamilyTree {
 	name: string;
 
 	@Column()
-	@IsUUID('4', {message: 'ID tài khoản phải là UUID hợp lệ'})
+	@IsNumber({}, {message: 'ID tài khoản phải là Number hợp lệ'})
 	@IsNotEmpty({message: 'ID tài khoản không được để trống'})
 	@ApiProperty({
 		description: 'ID của tài khoản liên kết với cây phả hệ',
 		example: '123e4567-e89b-12d3-a456-426614174001',
 	})
-	accountId: string;
+	accountId: number;
 
 	@Column()
 	@IsString({message: 'Địa chỉ phải là chuỗi'})

@@ -1,6 +1,6 @@
 import { GENDER_TYPE } from 'src/types/index.type';
 export declare class CreateMemberDTO {
-    familyTreeId: string;
+    familyTreeId: number;
     fullName: string;
     phone: string;
     email: string;

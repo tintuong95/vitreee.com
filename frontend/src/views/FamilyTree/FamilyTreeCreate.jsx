@@ -5,12 +5,12 @@ import { NOTIFICATION_TYPE } from '../../constant';
 import { openNotification } from '../../helper/notification';
 import { getMessageErrors, optionValidate } from '../../helper/validate';
 import { apiCreateFamilyTree } from '../../apis/familyTree';
+import PropTypes from 'prop-types';
 
-function FamilyTreeCreate() {
+function FamilyTreeCreate({getListFamilyTree,paramList}) {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [form] = Form.useForm();
 	const id = useParams();
-	const navigate = useNavigate();
 
 	const showModal = () => {
 		setIsModalOpen(true);
@@ -32,8 +32,15 @@ function FamilyTreeCreate() {
 				openNotification(NOTIFICATION_TYPE.success, 'Tạo mới thành công !');
 			})
 			.then((response) => {
+				handleCancel()
+				form.resetFields()
+			})
+			.then((response) => {
+				const params={...paramList,currentPage:1}
+				getListFamilyTree(params)
 				
 			})
+			
 			.catch((err) => {
 				openNotification(NOTIFICATION_TYPE.error, 'Tạo mới thất bại !');
 				console.log(err);
@@ -113,4 +120,8 @@ function FamilyTreeCreate() {
 		</>
 	);
 }
+FamilyTreeCreate.propTypes = {
+	getListFamilyTree:PropTypes.func,
+	paramList:PropTypes.object
+};
 export default FamilyTreeCreate;

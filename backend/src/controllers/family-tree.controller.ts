@@ -3,10 +3,10 @@ import {
 	Controller,
 	Delete,
 	Get,
-	HttpException,
 	HttpStatus,
 	Param,
 	Post,
+	Put,
 	Req,
 	Res,
 	UseGuards,
@@ -45,10 +45,16 @@ export class FamilyTreeController {
 				_account.id,
 				request
 			);
-			return response.status(HttpStatus.OK).json({
-				message: 'Find data successfully!',
-				data: find,
-			});
+			if (find.count == 0) {
+				return response.status(HttpStatus.NOT_FOUND).json({
+					message: 'Data not found!',
+				});
+			} else {
+				return response.status(HttpStatus.OK).json({
+					message: 'Find data successfully!',
+					data: find,
+				});
+			}
 		} catch (error) {
 			console.log(error);
 			return response.status(HttpStatus.BAD_REQUEST).json({
@@ -64,7 +70,7 @@ export class FamilyTreeController {
 	 */
 	@Get(':id/details')
 	async findOne(
-		@Param('id') id: string,
+		@Param('id') id: number,
 		@Res() response: Response,
 		@AccountDetail() _account: AccountDetailDTO
 	): Promise<any> {
@@ -113,10 +119,10 @@ export class FamilyTreeController {
 	 * @param id
 	 * @returns
 	 */
-	@Post(':id/update')
+	@Put(':id/update')
 	async updateAsync(
 		@Body() update: UpdateFamilyTreeDTO,
-		@Param('id') id: string,
+		@Param('id') id: number,
 		@Res() response: Response,
 		@AccountDetail() _account: AccountDetailDTO
 	): Promise<any> {
@@ -145,7 +151,7 @@ export class FamilyTreeController {
 	 */
 	@Delete(':id/remove')
 	async removeAsync(
-		@Param('id') id: string,
+		@Param('id') id: number,
 		@Res() response: Response,
 		@AccountDetail() _account: AccountDetailDTO
 	): Promise<any> {
@@ -170,7 +176,7 @@ export class FamilyTreeController {
 	 */
 	@Delete(':id/restore')
 	async restoreAsync(
-		@Param('id') id: string,
+		@Param('id') id: number,
 		@Res() response: Response,
 		@AccountDetail() _account: AccountDetailDTO
 	): Promise<any> {

@@ -25,11 +25,15 @@ let MemberProvider = class MemberProvider {
     }
     async findAllAsync(accountId, request) {
         const { skip, take, currentPage, perPage } = (0, pagination_1.queryHandler)(request.query);
+        const { familyTreeId = '' } = request.query;
         const result = this.memberRepository
             .createQueryBuilder('member')
             .where(`member.deletedAt IS NULL`)
             .andWhere(`member.accountId = :accountId`, {
             accountId: `${accountId}`,
+        })
+            .andWhere(`member.familyTreeId = :familyTreeId`, {
+            familyTreeId: `${familyTreeId}`,
         })
             .orderBy('member.createdAt', 'DESC')
             .skip(+skip)

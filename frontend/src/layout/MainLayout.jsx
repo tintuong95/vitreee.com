@@ -10,28 +10,27 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useMitt } from 'react-mitt';
 import { evtLogout } from '../store/auth/authSlice';
 import { FaHome } from 'react-icons/fa';
+import { IoArrowBack } from 'react-icons/io5';
 
 const { Content } = Layout;
 function MainLayout() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const {isLogin} = useSelector((state) => state?.auth);
+	const { isLogin } = useSelector((state) => state?.auth);
 	const { emitter } = useMitt();
 	const [pending, setPending] = useState(false);
-
 
 	/**
 	 * handler start
 	 */
 
-	const signOutHandle =()=>{
-		dispatch(evtLogout())
-	}
+	const signOutHandle = () => {
+		dispatch(evtLogout());
+	};
 
 	/**
 	 * handler end
 	 */
-
 
 	useEffect(() => {
 		// listen and respond to 'foo' events
@@ -41,11 +40,11 @@ function MainLayout() {
 		});
 	}, []);
 
-	useEffect(()=>{
-			if(!isLogin){
-				navigate("/dang-nhap")
-			}
-		},[isLogin])
+	useEffect(() => {
+		if (!isLogin) {
+			navigate('/login');
+		}
+	}, [isLogin]);
 	return (
 		<>
 			<Loading state={pending} />
@@ -63,7 +62,7 @@ function MainLayout() {
 						Family Tree
 					</div> */}
 						<div className='flex flex-col p-5 px-8 gap-6 justify-start  '>
-						<Button
+							<Button
 								className='border-blue-300 hover:text-white hover:bg-blue-300 text-blue-400'
 								onClick={() => {
 									navigate('/');
@@ -72,10 +71,11 @@ function MainLayout() {
 							>
 								<FaHome />
 								Trang chủ
-							</Button><Button
+							</Button>
+							<Button
 								className='border-blue-300 hover:text-white hover:bg-blue-300 text-blue-400'
 								onClick={() => {
-									navigate('/du-an');
+									navigate('/project');
 								}}
 								type='default'
 							>
@@ -106,12 +106,17 @@ function MainLayout() {
 					</div>
 
 					<div className='flex flex-col p-5 px-8 justify-start'>
-						<Button onClick={signOutHandle}  danger>Đăng xuất</Button>
+						<Button onClick={signOutHandle} danger>
+							Đăng xuất
+						</Button>
 					</div>
 				</div>
 				<div className='w-full' style={{ marginLeft: 220 }}>
-					<Content className=''>
+					<Content>
+						<div className='flex flex-col'>
 						<Outlet />
+							
+						</div>
 					</Content>
 				</div>
 			</div>

@@ -26,7 +26,7 @@ let AuthController = class AuthController {
     }
     async authLoginAsync(signin, response) {
         try {
-            let account = await this._accountProvider.signInAsync(signin.email, signin.password);
+            const account = await this._accountProvider.signInAsync(signin.email, signin.password);
             const temp = { ...account };
             delete temp.password;
             if (account) {

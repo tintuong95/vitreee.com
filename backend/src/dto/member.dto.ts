@@ -14,13 +14,13 @@ import {
 import {GENDER_TYPE} from 'src/types/index.type';
 
 export class CreateMemberDTO {
-	// @IsUUID('all', {message: 'ID tài khoản phải là UUID hợp lệ'})
+	// @IsNumber({}, {message: 'ID tài khoản phải là Number hợp lệ'})
 	@IsNotEmpty({message: 'ID tài khoản không được để trống'})
 	@ApiProperty({
 		description: 'ID tài khoản liên kết với thành viên',
 		example: '123e4567-e89b-12d3-a456-426614174001',
 	})
-	familyTreeId: string;
+	familyTreeId: number;
 
 	@IsString({message: 'Họ và tên phải là chuỗi'})
 	@IsNotEmpty({message: 'Họ và tên không được để trống'})

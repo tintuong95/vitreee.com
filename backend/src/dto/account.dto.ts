@@ -6,7 +6,7 @@ import {
 	IsNotEmpty,
 	IsOptional,
 	IsString,
-	IsUUID,
+	IsNumber,
 	Matches,
 	MaxLength,
 	MinLength,
@@ -128,9 +128,9 @@ export class UpdateAccountDto {
 }
 
 export class AccountResponseDto {
-	@IsUUID()
-	@ApiProperty({description: 'ID duy nhất của người dùng (UUID)'})
-	id: string;
+	@IsNumber()
+	@ApiProperty({description: 'ID duy nhất của người dùng (Number)'})
+	id: number;
 
 	@ApiProperty({description: 'Địa chỉ email của người dùng'})
 	email: string;

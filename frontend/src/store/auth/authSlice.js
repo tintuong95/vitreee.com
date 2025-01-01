@@ -12,12 +12,8 @@ const initialState = {
 	isLogin: false, //bolean
 	id: null,
 	accountId: null,
-	memberId: null,
 	username: null,
-	nameHotel: null,
-	expiredAt: null,
 	type: null,
-	role: null, //int
 	error: {
 		logging: false,
 	},
@@ -34,7 +30,7 @@ export const authSlice = createSlice({
 			state.loading = true;
 			state.isLogin = false;
 			localStorage.clear();
-			history.push('/dang-nhap');
+			history.push('/login');
 		},
 
 		statusLoggingFalse: (state) => {
@@ -114,7 +110,7 @@ export const authSlice = createSlice({
 
 		builder.addCase(actionAuthProfile.rejected, (state) => {
 			state.loading = false;
-			history.push('/dang-nhap');
+			history.push('/login');
 		});
 	},
 });

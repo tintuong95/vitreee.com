@@ -25,10 +25,17 @@ let MemberController = class MemberController {
     async findAll(request, response, _account) {
         try {
             const find = await this._memberProvider.findAllAsync(_account.id, request);
-            return response.status(common_1.HttpStatus.OK).json({
-                message: 'Find data successfully!',
-                data: find,
-            });
+            if (find.count == 0) {
+                return response.status(common_1.HttpStatus.NOT_FOUND).json({
+                    message: 'Data not found!',
+                });
+            }
+            else {
+                return response.status(common_1.HttpStatus.OK).json({
+                    message: 'Find data successfully!',
+                    data: find,
+                });
+            }
         }
         catch (error) {
             console.log(error);
@@ -129,7 +136,7 @@ __decorate([
     __param(1, (0, common_1.Res)()),
     __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object, account_decorator_1.AccountDetailDTO]),
+    __metadata("design:paramtypes", [Number, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], MemberController.prototype, "findOne", null);
 __decorate([
@@ -149,7 +156,7 @@ __decorate([
     __param(2, (0, common_1.Res)()),
     __param(3, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [member_dto_1.UpdateMemberDTO, String, Object, account_decorator_1.AccountDetailDTO]),
+    __metadata("design:paramtypes", [member_dto_1.UpdateMemberDTO, Number, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], MemberController.prototype, "updateAsync", null);
 __decorate([
@@ -158,7 +165,7 @@ __decorate([
     __param(1, (0, common_1.Res)()),
     __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object, account_decorator_1.AccountDetailDTO]),
+    __metadata("design:paramtypes", [Number, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], MemberController.prototype, "removeAsync", null);
 __decorate([
@@ -167,7 +174,7 @@ __decorate([
     __param(1, (0, common_1.Res)()),
     __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object, account_decorator_1.AccountDetailDTO]),
+    __metadata("design:paramtypes", [Number, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], MemberController.prototype, "restoreAsync", null);
 exports.MemberController = MemberController = __decorate([

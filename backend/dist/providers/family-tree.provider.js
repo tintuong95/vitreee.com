@@ -15,16 +15,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FamilyTreeProvider = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const family_tree_1 = require("../entities/family-tree");
-const typeorm_2 = require("typeorm");
 const _ = require("lodash");
+const family_tree_1 = require("../entities/family-tree");
 const pagination_1 = require("../helper/pagination");
+const typeorm_2 = require("typeorm");
 let FamilyTreeProvider = class FamilyTreeProvider {
     constructor(familyTreesRepository) {
         this.familyTreesRepository = familyTreesRepository;
     }
     async findAllAsync(accountId, request) {
         const { skip, take, currentPage, perPage } = (0, pagination_1.queryHandler)(request.query);
+        const { name = '' } = request.query;
         const result = this.familyTreesRepository
             .createQueryBuilder('family_tree')
             .where(`family_tree.deletedAt IS NULL`)
@@ -34,16 +35,13 @@ let FamilyTreeProvider = class FamilyTreeProvider {
             .orderBy('family_tree.createdAt', 'DESC')
             .skip(+skip)
             .take(+take);
+        name &&
+            result.andWhere('family_tree.name LIKE :name', {
+                name: `%${name}%`,
+            });
         const count = await result.getCount();
         const list = await result.getMany();
-        if (count == 0)
-            throw new common_1.HttpException('Not Found', common_1.HttpStatus.NOT_FOUND);
-        return {
-            count,
-            list,
-            currentPage,
-            perPage,
-        };
+        return (0, pagination_1.pagination)(request, [list, count], currentPage, perPage);
     }
     async findOneAsync(accountId, id) {
         const find = await this.familyTreesRepository

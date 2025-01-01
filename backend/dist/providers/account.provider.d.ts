@@ -11,10 +11,10 @@ export declare class AccountProvider {
         currentPage: number;
         perPage: number;
     }>;
-    findOneAsync(id: string): Promise<Account | null>;
+    findOneAsync(id: number): Promise<Account | null>;
     addAsync(CreateAccountDto: CreateAccountDto): Promise<Account>;
-    updateAsync(id: string, update: UpdateAccountDto): Promise<Account>;
-    removeAsync(id: string): Promise<import("typeorm").UpdateResult>;
-    restoreAsync(id: string): Promise<import("typeorm").UpdateResult>;
+    updateAsync(id: number, update: UpdateAccountDto): Promise<Account>;
+    removeAsync(id: number): Promise<import("typeorm").UpdateResult>;
+    restoreAsync(id: number): Promise<import("typeorm").UpdateResult>;
     signInAsync(email: string, password: string): Promise<Account>;
 }

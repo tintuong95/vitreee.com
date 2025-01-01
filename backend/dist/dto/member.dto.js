@@ -22,7 +22,7 @@ __decorate([
         description: 'ID tài khoản liên kết với thành viên',
         example: '123e4567-e89b-12d3-a456-426614174001',
     }),
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], CreateMemberDTO.prototype, "familyTreeId", void 0);
 __decorate([
     (0, class_validator_1.IsString)({ message: 'Họ và tên phải là chuỗi' }),

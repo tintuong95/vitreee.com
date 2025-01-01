@@ -3,9 +3,9 @@ import { Account } from './account';
 import { RE_ACCOUNT, RE_MEMBER } from 'src/contants';
 import { Member } from './member';
 export declare class FamilyTree {
-    id: string;
+    id: number;
     name: string;
-    accountId: string;
+    accountId: number;
     address: string;
     description: string;
     status: FAMILY_TREE_STATUS;

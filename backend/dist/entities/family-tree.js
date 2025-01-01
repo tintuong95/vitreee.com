@@ -24,12 +24,12 @@ exports.FamilyTree = FamilyTree;
 _a = contants_1.RE_ACCOUNT;
 _b = contants_1.RE_MEMBER;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
     (0, swagger_1.ApiProperty)({
-        description: 'ID của cây phả hệ (UUID)',
-        example: '123e4567-e89b-12d3-a456-426614174000',
+        description: 'ID của mối quan hệ ',
+        example: '1',
     }),
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], FamilyTree.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
@@ -47,13 +47,13 @@ __decorate([
 ], FamilyTree.prototype, "name", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    (0, class_validator_1.IsUUID)('4', { message: 'ID tài khoản phải là UUID hợp lệ' }),
+    (0, class_validator_1.IsNumber)({}, { message: 'ID tài khoản phải là Number hợp lệ' }),
     (0, class_validator_1.IsNotEmpty)({ message: 'ID tài khoản không được để trống' }),
     (0, swagger_1.ApiProperty)({
         description: 'ID của tài khoản liên kết với cây phả hệ',
         example: '123e4567-e89b-12d3-a456-426614174001',
     }),
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], FamilyTree.prototype, "accountId", void 0);
 __decorate([
     (0, typeorm_1.Column)(),

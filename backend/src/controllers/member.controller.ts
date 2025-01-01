@@ -3,7 +3,6 @@ import {
 	Controller,
 	Delete,
 	Get,
-	HttpException,
 	HttpStatus,
 	Param,
 	Post,
@@ -42,10 +41,16 @@ export class MemberController {
 				_account.id,
 				request
 			);
-			return response.status(HttpStatus.OK).json({
-				message: 'Find data successfully!',
-				data: find,
-			});
+			if (find.count == 0) {
+				return response.status(HttpStatus.NOT_FOUND).json({
+					message: 'Data not found!',
+				});
+			} else {
+				return response.status(HttpStatus.OK).json({
+					message: 'Find data successfully!',
+					data: find,
+				});
+			}
 		} catch (error) {
 			console.log(error);
 			return response.status(HttpStatus.BAD_REQUEST).json({
@@ -61,7 +66,7 @@ export class MemberController {
 	 */
 	@Get(':id/details')
 	async findOne(
-		@Param('id') id: string,
+		@Param('id') id: number,
 		@Res() response: Response,
 		@AccountDetail() _account: AccountDetailDTO
 	): Promise<any> {
@@ -113,7 +118,7 @@ export class MemberController {
 	@Post(':id/update')
 	async updateAsync(
 		@Body() update: UpdateMemberDTO,
-		@Param('id') id: string,
+		@Param('id') id: number,
 		@Res() response: Response,
 		@AccountDetail() _account: AccountDetailDTO
 	): Promise<any> {
@@ -142,7 +147,7 @@ export class MemberController {
 	 */
 	@Delete(':id/remove')
 	async removeAsync(
-		@Param('id') id: string,
+		@Param('id') id: number,
 		@Res() response: Response,
 		@AccountDetail() _account: AccountDetailDTO
 	): Promise<any> {
@@ -167,7 +172,7 @@ export class MemberController {
 	 */
 	@Delete(':id/restore')
 	async restoreAsync(
-		@Param('id') id: string,
+		@Param('id') id: number,
 		@Res() response: Response,
 		@AccountDetail() _account: AccountDetailDTO
 	): Promise<any> {

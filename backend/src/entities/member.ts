@@ -7,7 +7,6 @@ import {
 	IsNumber,
 	IsOptional,
 	IsString,
-	IsUUID,
 	Matches,
 	MaxLength,
 	MinLength,
@@ -30,30 +29,30 @@ import {Relation} from './relation';
 
 @Entity()
 export class Member {
-	@PrimaryGeneratedColumn('uuid')
+	@PrimaryGeneratedColumn()
 	@ApiProperty({
-		description: 'ID của thành viên (UUID)',
-		example: '123e4567-e89b-12d3-a456-426614174000',
+		description: 'ID của mối quan hệ ',
+		example: '1',
 	})
-	id: string;
+	id: number;
 
 	@Column()
-	@IsUUID('4', {message: 'ID tài khoản phải là UUID hợp lệ'})
+	@IsNumber({}, {message: 'ID tài khoản phải là Number hợp lệ'})
 	@IsNotEmpty({message: 'ID tài khoản không được để trống'})
 	@ApiProperty({
 		description: 'ID tài khoản liên kết với thành viên',
 		example: '123e4567-e89b-12d3-a456-426614174001',
 	})
-	accountId: string;
+	accountId: number;
 
 	@Column()
-	@IsUUID('4', {message: 'ID tài khoản phải là UUID hợp lệ'})
+	@IsNumber({}, {message: 'ID tài khoản phải là Number hợp lệ'})
 	@IsNotEmpty({message: 'ID tài khoản không được để trống'})
 	@ApiProperty({
 		description: 'ID tài khoản liên kết với thành viên',
 		example: '123e4567-e89b-12d3-a456-426614174001',
 	})
-	familyTreeId: string;
+	familyTreeId: number;
 
 	@Column()
 	@IsString({message: 'Họ và tên phải là chuỗi'})

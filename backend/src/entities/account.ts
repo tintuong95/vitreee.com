@@ -1,17 +1,6 @@
 import {ApiProperty} from '@nestjs/swagger';
-import {
-	Entity,
-	Column,
-	PrimaryGeneratedColumn,
-	CreateDateColumn,
-	UpdateDateColumn,
-	DeleteDateColumn,
-	BeforeInsert,
-	OneToMany,
-} from 'typeorm';
 import * as bcrypt from 'bcryptjs';
-import {ACCOUNT_STATUS} from 'src/types/account.type';
-import {GENDER_TYPE} from 'src/types/index.type';
+import {Exclude} from 'class-transformer';
 import {
 	IsDateString,
 	IsEmail,
@@ -19,25 +8,34 @@ import {
 	IsNotEmpty,
 	IsOptional,
 	IsString,
-	IsUUID,
 	Matches,
 	MaxLength,
 	MinLength,
 } from 'class-validator';
-import {Exclude} from 'class-transformer';
 import {RE_ACCOUNT, RE_FAMILY_TREE, RE_MEMBER, RE_RELATION} from 'src/contants';
-import {Member} from './member';
+import {ACCOUNT_STATUS} from 'src/types/account.type';
+import {GENDER_TYPE} from 'src/types/index.type';
+import {
+	BeforeInsert,
+	Column,
+	CreateDateColumn,
+	DeleteDateColumn,
+	Entity,
+	OneToMany,
+	PrimaryGeneratedColumn,
+	UpdateDateColumn,
+} from 'typeorm';
 import {FamilyTree} from './family-tree';
+import {Member} from './member';
 import {Relation} from './relation';
 @Entity()
 export class Account {
-	@PrimaryGeneratedColumn('uuid')
-	@IsUUID()
+	@PrimaryGeneratedColumn()
 	@ApiProperty({
-		description: 'ID duy nhất của người dùng (UUID)',
+		description: 'ID duy nhất của người dùng (Number)',
 		example: '123e4567-e89b-12d3-a456-426614174000',
 	})
-	id: string;
+	id: number;
 
 	@Column({type: 'varchar', length: 100})
 	@MinLength(5, {message: 'Email phải có ít nhất 5 ký tự'})

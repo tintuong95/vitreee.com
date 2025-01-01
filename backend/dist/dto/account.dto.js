@@ -142,9 +142,9 @@ class AccountResponseDto {
 }
 exports.AccountResponseDto = AccountResponseDto;
 __decorate([
-    (0, class_validator_1.IsUUID)(),
-    (0, swagger_1.ApiProperty)({ description: 'ID duy nhất của người dùng (UUID)' }),
-    __metadata("design:type", String)
+    (0, class_validator_1.IsNumber)(),
+    (0, swagger_1.ApiProperty)({ description: 'ID duy nhất của người dùng (Number)' }),
+    __metadata("design:type", Number)
 ], AccountResponseDto.prototype, "id", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Địa chỉ email của người dùng' }),

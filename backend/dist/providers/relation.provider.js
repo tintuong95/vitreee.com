@@ -15,29 +15,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RelationProvider = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const relation_1 = require("../entities/relation");
-const typeorm_2 = require("typeorm");
 const _ = require("lodash");
+const relation_1 = require("../entities/relation");
 const pagination_1 = require("../helper/pagination");
+const typeorm_2 = require("typeorm");
 let RelationProvider = class RelationProvider {
     constructor(relationRepository) {
         this.relationRepository = relationRepository;
     }
     async findAllAsync(accountId, request) {
         const { skip, take, currentPage, perPage } = (0, pagination_1.queryHandler)(request.query);
+        const { familyTreeId = '' } = request.query;
         const result = this.relationRepository
             .createQueryBuilder('relation')
             .where(`relation.deletedAt IS NULL`)
             .andWhere(`relation.accountId = :accountId`, {
             accountId: `${accountId}`,
         })
+            .andWhere(`relation.familyTreeId = :familyTreeId`, {
+            familyTreeId: `${familyTreeId}`,
+        })
             .orderBy('relation.createdAt', 'DESC')
             .skip(+skip)
             .take(+take);
         const count = await result.getCount();
         const list = await result.getMany();
-        if (count == 0)
-            throw new common_1.HttpException('Not Found', common_1.HttpStatus.NOT_FOUND);
         return {
             count,
             list,

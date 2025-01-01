@@ -22,23 +22,33 @@ let Relation = class Relation {
 exports.Relation = Relation;
 _a = contants_1.RE_ACCOUNT;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
     (0, swagger_1.ApiProperty)({
-        description: 'ID của mối quan hệ (UUID)',
-        example: '123e4567-e89b-12d3-a456-426614174000',
+        description: 'ID của mối quan hệ ',
+        example: '1',
     }),
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], Relation.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    (0, class_validator_1.IsUUID)('4', { message: 'ID tài khoản phải là UUID hợp lệ' }),
+    (0, class_validator_1.IsNumber)({}, { message: 'ID tài khoản phải là Number hợp lệ' }),
     (0, class_validator_1.IsNotEmpty)({ message: 'ID tài khoản không được để trống' }),
     (0, swagger_1.ApiProperty)({
         description: 'ID tài khoản liên kết với mối quan hệ',
         example: '123e4567-e89b-12d3-a456-426614174001',
     }),
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], Relation.prototype, "accountId", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    (0, class_validator_1.IsNumber)({}, { message: 'ID tài khoản phải là Number hợp lệ' }),
+    (0, class_validator_1.IsNotEmpty)({ message: 'ID tài khoản không được để trống' }),
+    (0, swagger_1.ApiProperty)({
+        description: 'ID tài khoản liên kết với thành viên',
+        example: '123e4567-e89b-12d3-a456-426614174001',
+    }),
+    __metadata("design:type", Number)
+], Relation.prototype, "familyTreeId", void 0);
 __decorate([
     (0, typeorm_1.Column)({
         type: 'enum',
@@ -56,24 +66,24 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     (0, typeorm_1.JoinColumn)({ name: 'member_first_id' }),
-    (0, class_validator_1.IsUUID)('4', { message: 'ID tài khoản phải là UUID hợp lệ' }),
+    (0, class_validator_1.IsNumber)({}, { message: 'ID tài khoản phải là Number hợp lệ' }),
     (0, class_validator_1.IsNotEmpty)({ message: 'ID tài khoản không được để trống' }),
     (0, swagger_1.ApiProperty)({
         description: 'ID tài khoản liên kết với thành viên',
         example: '123e4567-e89b-12d3-a456-426614174001',
     }),
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], Relation.prototype, "member_first_id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     (0, typeorm_1.JoinColumn)({ name: 'member_second_id' }),
-    (0, class_validator_1.IsUUID)('4', { message: 'ID tài khoản phải là UUID hợp lệ' }),
+    (0, class_validator_1.IsNumber)({}, { message: 'ID tài khoản phải là Number hợp lệ' }),
     (0, class_validator_1.IsNotEmpty)({ message: 'ID tài khoản không được để trống' }),
     (0, swagger_1.ApiProperty)({
         description: 'ID tài khoản liên kết với thành viên',
         example: '123e4567-e89b-12d3-a456-426614174001',
     }),
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], Relation.prototype, "member_second_id", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),

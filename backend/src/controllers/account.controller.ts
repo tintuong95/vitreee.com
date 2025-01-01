@@ -3,7 +3,6 @@ import {
 	Controller,
 	Delete,
 	Get,
-	HttpException,
 	HttpStatus,
 	Param,
 	Post,
@@ -34,10 +33,16 @@ export class AccountController {
 	): Promise<any> {
 		try {
 			const find = await this._accountProvider.findAllAsync(request);
-			return response.status(HttpStatus.OK).json({
-				message: 'Find data successfully!',
-				data: find,
-			});
+			if (find.count == 0) {
+				return response.status(HttpStatus.NOT_FOUND).json({
+					message: 'Data not found!',
+				});
+			} else {
+				return response.status(HttpStatus.OK).json({
+					message: 'Find data successfully!',
+					data: find,
+				});
+			}
 		} catch (error) {
 			console.log(error);
 			return response.status(HttpStatus.BAD_REQUEST).json({
@@ -53,7 +58,7 @@ export class AccountController {
 	 */
 	@Get(':id/details')
 	async findOne(
-		@Param('id') id: string,
+		@Param('id') id: number,
 		@Res() response: Response
 	): Promise<any> {
 		try {
@@ -103,7 +108,7 @@ export class AccountController {
 	@Post(':id/update')
 	async updateAsync(
 		@Body() update: UpdateAccountDto,
-		@Param('id') id: string,
+		@Param('id') id: number,
 		@Res() response: Response
 	): Promise<any> {
 		try {
@@ -127,7 +132,7 @@ export class AccountController {
 	 */
 	@Delete(':id/remove')
 	async removeAsync(
-		@Param('id') id: string,
+		@Param('id') id: number,
 		@Res() response: Response
 	): Promise<any> {
 		try {
@@ -151,7 +156,7 @@ export class AccountController {
 	 */
 	@Delete(':id/restore')
 	async restoreAsync(
-		@Param('id') id: string,
+		@Param('id') id: number,
 		@Res() response: Response
 	): Promise<any> {
 		try {

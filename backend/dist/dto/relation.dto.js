@@ -27,23 +27,31 @@ __decorate([
     __metadata("design:type", String)
 ], CreateRelationDTO.prototype, "type", void 0);
 __decorate([
-    (0, class_validator_1.IsUUID)('all', { message: 'ID tài khoản phải là UUID hợp lệ' }),
+    (0, class_validator_1.IsNumber)({}, { message: 'ID tài khoản phải là Number hợp lệ' }),
     (0, class_validator_1.IsNotEmpty)({ message: 'ID tài khoản không được để trống' }),
     (0, swagger_1.ApiProperty)({
         description: 'ID của thành viên đầu tiên',
         example: 1,
     }),
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], CreateRelationDTO.prototype, "member_first_id", void 0);
 __decorate([
-    (0, class_validator_1.IsUUID)('all', { message: 'ID tài khoản phải là UUID hợp lệ' }),
+    (0, class_validator_1.IsNumber)({}, { message: 'ID tài khoản phải là Number hợp lệ' }),
     (0, class_validator_1.IsNotEmpty)({ message: 'ID tài khoản không được để trống' }),
     (0, swagger_1.ApiProperty)({
         description: 'ID của thành viên thứ hai',
         example: 2,
     }),
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], CreateRelationDTO.prototype, "member_second_id", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)({ message: 'ID tài khoản không được để trống' }),
+    (0, swagger_1.ApiProperty)({
+        description: 'ID tài khoản liên kết với thành viên',
+        example: '123e4567-e89b-12d3-a456-426614174001',
+    }),
+    __metadata("design:type", Number)
+], CreateRelationDTO.prototype, "familyTreeId", void 0);
 class UpdateRelationDTO extends (0, swagger_1.PartialType)(CreateRelationDTO) {
 }
 exports.UpdateRelationDTO = UpdateRelationDTO;

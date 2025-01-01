@@ -1,5 +1,5 @@
 import {ApiProperty} from '@nestjs/swagger';
-import {IsEnum, IsNotEmpty, IsUUID} from 'class-validator';
+import {IsEnum, IsNotEmpty, IsNumber} from 'class-validator';
 import {RE_ACCOUNT, RE_RELATION} from 'src/contants';
 import {RELATION_MEMBER_TYPE} from 'src/types/relation.type';
 import {
@@ -16,21 +16,30 @@ import {Account} from './account';
 
 @Entity()
 export class Relation {
-	@PrimaryGeneratedColumn('uuid')
+	@PrimaryGeneratedColumn()
 	@ApiProperty({
-		description: 'ID của mối quan hệ (UUID)',
-		example: '123e4567-e89b-12d3-a456-426614174000',
+		description: 'ID của mối quan hệ ',
+		example: '1',
 	})
-	id: string;
+	id: number;
 
 	@Column()
-	@IsUUID('4', {message: 'ID tài khoản phải là UUID hợp lệ'})
+	@IsNumber({}, {message: 'ID tài khoản phải là Number hợp lệ'})
 	@IsNotEmpty({message: 'ID tài khoản không được để trống'})
 	@ApiProperty({
 		description: 'ID tài khoản liên kết với mối quan hệ',
 		example: '123e4567-e89b-12d3-a456-426614174001',
 	})
-	accountId: string;
+	accountId: number;
+
+	@Column()
+	@IsNumber({}, {message: 'ID tài khoản phải là Number hợp lệ'})
+	@IsNotEmpty({message: 'ID tài khoản không được để trống'})
+	@ApiProperty({
+		description: 'ID tài khoản liên kết với thành viên',
+		example: '123e4567-e89b-12d3-a456-426614174001',
+	})
+	familyTreeId: number;
 
 	@Column({
 		type: 'enum',
@@ -47,23 +56,23 @@ export class Relation {
 
 	@Column()
 	@JoinColumn({name: 'member_first_id'})
-	@IsUUID('4', {message: 'ID tài khoản phải là UUID hợp lệ'})
+	@IsNumber({}, {message: 'ID tài khoản phải là Number hợp lệ'})
 	@IsNotEmpty({message: 'ID tài khoản không được để trống'})
 	@ApiProperty({
 		description: 'ID tài khoản liên kết với thành viên',
 		example: '123e4567-e89b-12d3-a456-426614174001',
 	})
-	member_first_id: string;
+	member_first_id: number;
 
 	@Column()
 	@JoinColumn({name: 'member_second_id'})
-	@IsUUID('4', {message: 'ID tài khoản phải là UUID hợp lệ'})
+	@IsNumber({}, {message: 'ID tài khoản phải là Number hợp lệ'})
 	@IsNotEmpty({message: 'ID tài khoản không được để trống'})
 	@ApiProperty({
 		description: 'ID tài khoản liên kết với thành viên',
 		example: '123e4567-e89b-12d3-a456-426614174001',
 	})
-	member_second_id: string;
+	member_second_id: number;
 
 	@CreateDateColumn()
 	@ApiProperty({

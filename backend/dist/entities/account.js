@@ -12,15 +12,15 @@ var _a, _b, _c;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Account = void 0;
 const swagger_1 = require("@nestjs/swagger");
-const typeorm_1 = require("typeorm");
 const bcrypt = require("bcryptjs");
+const class_transformer_1 = require("class-transformer");
+const class_validator_1 = require("class-validator");
+const contants_1 = require("../contants");
 const account_type_1 = require("../types/account.type");
 const index_type_1 = require("../types/index.type");
-const class_validator_1 = require("class-validator");
-const class_transformer_1 = require("class-transformer");
-const contants_1 = require("../contants");
-const member_1 = require("./member");
+const typeorm_1 = require("typeorm");
 const family_tree_1 = require("./family-tree");
+const member_1 = require("./member");
 const relation_1 = require("./relation");
 let Account = class Account {
     hash() {
@@ -35,13 +35,12 @@ _a = contants_1.RE_MEMBER;
 _b = contants_1.RE_FAMILY_TREE;
 _c = contants_1.RE_RELATION;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
-    (0, class_validator_1.IsUUID)(),
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
     (0, swagger_1.ApiProperty)({
-        description: 'ID duy nhất của người dùng (UUID)',
+        description: 'ID duy nhất của người dùng (Number)',
         example: '123e4567-e89b-12d3-a456-426614174000',
     }),
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], Account.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'varchar', length: 100 }),

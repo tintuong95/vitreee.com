@@ -25,10 +25,17 @@ let FamilyTreeController = class FamilyTreeController {
     async findAll(request, response, _account) {
         try {
             const find = await this._familyTreeProvider.findAllAsync(_account.id, request);
-            return response.status(common_1.HttpStatus.OK).json({
-                message: 'Find data successfully!',
-                data: find,
-            });
+            if (find.count == 0) {
+                return response.status(common_1.HttpStatus.NOT_FOUND).json({
+                    message: 'Data not found!',
+                });
+            }
+            else {
+                return response.status(common_1.HttpStatus.OK).json({
+                    message: 'Find data successfully!',
+                    data: find,
+                });
+            }
         }
         catch (error) {
             console.log(error);
@@ -129,7 +136,7 @@ __decorate([
     __param(1, (0, common_1.Res)()),
     __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object, account_decorator_1.AccountDetailDTO]),
+    __metadata("design:paramtypes", [Number, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], FamilyTreeController.prototype, "findOne", null);
 __decorate([
@@ -142,13 +149,13 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], FamilyTreeController.prototype, "createAsync", null);
 __decorate([
-    (0, common_1.Post)(':id/update'),
+    (0, common_1.Put)(':id/update'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Param)('id')),
     __param(2, (0, common_1.Res)()),
     __param(3, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [family_tree_dto_1.UpdateFamilyTreeDTO, String, Object, account_decorator_1.AccountDetailDTO]),
+    __metadata("design:paramtypes", [family_tree_dto_1.UpdateFamilyTreeDTO, Number, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], FamilyTreeController.prototype, "updateAsync", null);
 __decorate([
@@ -157,7 +164,7 @@ __decorate([
     __param(1, (0, common_1.Res)()),
     __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object, account_decorator_1.AccountDetailDTO]),
+    __metadata("design:paramtypes", [Number, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], FamilyTreeController.prototype, "removeAsync", null);
 __decorate([
@@ -166,7 +173,7 @@ __decorate([
     __param(1, (0, common_1.Res)()),
     __param(2, (0, account_decorator_1.AccountDetail)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object, account_decorator_1.AccountDetailDTO]),
+    __metadata("design:paramtypes", [Number, Object, account_decorator_1.AccountDetailDTO]),
     __metadata("design:returntype", Promise)
 ], FamilyTreeController.prototype, "restoreAsync", null);
 exports.FamilyTreeController = FamilyTreeController = __decorate([

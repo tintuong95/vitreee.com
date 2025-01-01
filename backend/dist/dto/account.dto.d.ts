@@ -20,7 +20,7 @@ export declare class UpdateAccountDto {
     status?: ACCOUNT_STATUS;
 }
 export declare class AccountResponseDto {
-    id: string;
+    id: number;
     email: string;
     fullName: string;
     phone: string;

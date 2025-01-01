@@ -72,7 +72,7 @@ function BaseSelectEdit({
 					console.log(e);
 				}}
 				className='grid grid-cols-12 items-center'>
-				<div className='col-span-3'>{label} :</div>
+				<div className='col-span-3 text-base'>{label} :</div>
 				<div className='col-span-6'>
 					<Form.Item className='my-0 w-full' name={field} rules={rules}>
 						<Select

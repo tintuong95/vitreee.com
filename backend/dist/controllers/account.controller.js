@@ -23,10 +23,17 @@ let AccountController = class AccountController {
     async findAll(request, response) {
         try {
             const find = await this._accountProvider.findAllAsync(request);
-            return response.status(common_1.HttpStatus.OK).json({
-                message: 'Find data successfully!',
-                data: find,
-            });
+            if (find.count == 0) {
+                return response.status(common_1.HttpStatus.NOT_FOUND).json({
+                    message: 'Data not found!',
+                });
+            }
+            else {
+                return response.status(common_1.HttpStatus.OK).json({
+                    message: 'Find data successfully!',
+                    data: find,
+                });
+            }
         }
         catch (error) {
             console.log(error);
@@ -125,7 +132,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [Number, Object]),
     __metadata("design:returntype", Promise)
 ], AccountController.prototype, "findOne", null);
 __decorate([
@@ -142,7 +149,7 @@ __decorate([
     __param(1, (0, common_1.Param)('id')),
     __param(2, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [account_dto_1.UpdateAccountDto, String, Object]),
+    __metadata("design:paramtypes", [account_dto_1.UpdateAccountDto, Number, Object]),
     __metadata("design:returntype", Promise)
 ], AccountController.prototype, "updateAsync", null);
 __decorate([
@@ -150,7 +157,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [Number, Object]),
     __metadata("design:returntype", Promise)
 ], AccountController.prototype, "removeAsync", null);
 __decorate([
@@ -158,7 +165,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [Number, Object]),
     __metadata("design:returntype", Promise)
 ], AccountController.prototype, "restoreAsync", null);
 exports.AccountController = AccountController = __decorate([
